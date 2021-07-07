@@ -1,0 +1,67 @@
+ES6 的环境配置（为了兼容 ES5）
+掌握 ES6 之后，如果要考虑 ES5 的兼容性，可以这样做：写 ES6 语法的 js 代码，然后通过 Babel将 ES6 转换为 ES5。
+
+babel 的作用是将 ES6 语法转为 ES5 语法，支持低端浏览器。
+
+但是，在这之前，我们需要配置一下相关的环境。
+
+建立工程目录
+（1）先建立一个空的工程目录 ES6Demo，并在目录下建立两个文件夹 src和 dist：
+
+src：书写 ES6 代码，我们写的 js 程序都放在这里。
+
+dist：利用 Babel 编译生成的 ES5 代码。我们在 HTML 页面需要引入 dist 里的 js 文件。
+
+（2）在 src 里新建文件 index.html：
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+        <title>Document</title>
+        <!-- 我们引入 ES5 中的 js 文件，而不是引入 ES6 中的 js 文件。 -->
+        <script src="./dist/index.js"></script>
+    </head>
+    <body></body>
+</html>
+注意，上方代码中，我们引入的是dist目录下的 js 文件。
+
+然后我们新建文件 src/index.js：
+
+let a = 'smyhvae';
+const b = 'qianguyihao';
+
+console.log(a);
+console.log(b);
+这个文件是一个 ES6 语法 的 js 文件，稍后，我们尝试把这个 ES6 语法的 js 文件转化为 ES5 的 js 文件。
+
+PS：我们在写代码时，能用单引号尽量用单引号，而不是双引号，前者在压缩之后，程序执行会更快。
+
+全局安装 Babel-cli
+（1）初始化项目：
+
+在安装 Babel 之前，需要先用 npm init 先初始化我们的项目。打开终端或者通过 cmd 打开命令行工具，进入项目目录，输入如下命令：
+
+	npm init -y
+上方代码中，-y 代表全部默认同意，就不用一次次按回车了（稍后再根据需要，在文件中手动修改）。命令执行完成后，会在项目的根目录下生成 package.json 文件：
+
+{
+    "name": "es6demo",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "author": "smyhvae",
+    "license": "ISC"
+}
+PS：VS Code 里打开终端的快捷键是：Contol + ~。
+
+（2）全局安装 Babel-cli：
+
+在终端中输入以下命令：
+
+	npm install -g babel-cli

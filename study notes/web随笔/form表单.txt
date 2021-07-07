@@ -1,0 +1,149 @@
+
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>表单元素及其属性</title>
+</head>
+<body>
+	<form action="http:www.baidu.com" method="get" target="_blank">
+		提交按钮
+		<input type="submit"><br>
+		文本按钮
+		<input type="text"><br>
+		重置按钮
+		<input type="reset"><br>
+		普通按钮
+		<input type="button"><br>
+		图片式提交按钮
+		<input type="image" src="海滩背景.jpg"><br>
+		隐藏字段
+		<input type="hidden" value="syb"><br>
+		邮箱地址输入（新属性值），会验证，邮箱格式不正确会出现提示
+		<input type="email"><br>
+		网址输入（新属性值），会验证，网址格式不正确会提示
+		<input type="url"><br>
+		电话号码输入（新属性值），不会验证
+		<input type="tel"><br>
+		输入的是数字（新属性值），配合max、min、step、value(默认值)使用
+		<input type="number" max="10" min="0" step="2" value="2"><br>
+		活动条（新属性值），与number类似
+		<input type="range" max="100" min="60" step="5" value="70"><br>
+		时间类：(新增属性值)<br>
+		(1)datetime
+		<input type="datetime"><br>
+		(2)date
+		<input type="date"><br>
+		(3)datetime-local
+		<input type="datetime-local"><br>
+		(4)month
+		<input type="month"><br>
+		(5)week
+		<input type="week"><br>
+		颜色，点击按钮选择颜色
+		<input type="color"><br>
+		搜索框
+		<input type="search"><br>
+	<!-- 	选取文件,accept写文件类型，multipe一次可以选取多个文件，这里写的文件格式筛选不知出了什么问题，无效...
+		<input type="file" accept="image/jpg" multiple="multiple"><br> -->
+		复选框
+		<input type="checkbox" name="fx">html
+		<input type="checkbox" name="fx">css
+		<input type="checkbox" name="fx" checked="checked">javascript <br>
+		单选框
+		<input type="radio" name="dx">男
+		<input type="radio" name="dx">女
+		<input type="radio" name="dx" checked="checked">保密
+	</form>
+	<form action="">
+		<h3>注册界面</h3>
+		用户名：<input type="text" value="少于四个字" maxlength="4" required="required" autofocus="autofocus"><br>
+		<!-- 这里的获焦与下面的accesskey有冲突，二者只能选其一 -->
+		密码：<input type="password" autocomplete="off" ><br>
+		国家：<input type="text" readonly="readonly" value="Chinna" ><br>
+		地址：<input type="text" required="required" >
+		<input type="text" disabled="disabled" value="如**省**市"><br>
+		验证码：<input type="search" placeholder="请输入验证码"  accesskey="v">
+		<input type="button"  value="点击获取验证码"><br>
+		<input type="submit" value="注册">
+	</form>
+ 
+</body>
+</html>
+
+
+Form元素及其属性
+
+Form元素用来定义一个表单，是建立表单的基础元素（类似于定义表格的table）
+
+表单的其他元素包含在form元素中，其主要子元素有：input、button、select…
+
+属性：
+
+1.      action指定表单的发送地址（服务器地址）
+
+2.      method是表单数据发送至服务器的方法，常用的有两种：get、post，用的input 的type属性值是submit，“提交”是这个按钮value属性的默认值
+
+3.      get和post的区别：
+
+（1）      get方法提交，数据会附在网址之后主动提交给服务器
+
+（2）      post方法提交数据不会附在网址后，会将数据打包发送给服务器，等候服务器来读取数据进行处理
+
+4.      还可以添加一个target属性，指定在新窗口打开
+
+5.      Input元素属性：
+
+（1）      type属性：指定输入内容的类型，默认为text，单行文本框，还有password、submit、reset、button这些值
+
+image是图片式提交按钮
+
+hidden隐藏字段
+
+email表示要输入一个电子邮箱（新属性值），会对输入内容进行验证
+
+url表示要输入一个网址（新属性值），会对输入内容进行验证
+
+tel表示输入的内容是一个电话号码（新属性值），不会对输入的内容验证
+
+number可以配合input的max、min、step、value规定允许输入的最大值、最小值、步长、默认值（新属性值）
+
+range（活动条）与number类型类似，也表示一定范围输入，但是以一个活动条的状态显示
+
+时间类（新增属性值）：包括datetime、datetime-local、date、month、week、time
+
+Color：可以建立一个颜色的选择输入框
+
+Search（新属性值）用于建立一个搜索框，用来供用户输入搜索的关键词
+
+File用来创建一个文件选取的输入框，可通过accept属性规定选取文件的类型，比如图片、视频，multipe属性可以设定一次允许选择多个文件
+
+Checkbox：复选框，通过checked属性可将某个选项设为默认的选取状态，再次点击取消选取
+
+Radio：单选框，通过checked属性可将某个选项设为默认的选取状态，再次点击取消选取，必须将同一组选项设置为一个相同的name属性值
+
+（2）      name属性：输入内容的识别名称，传递参数时候的名称
+
+（3）      value属性：默认值
+
+（4）      maxlength属性：输入的最大字数
+
+（5）      readonly属性：只读属性，设置内容不可变更
+
+（6）      disabled属性：设置为不可用
+
+（7）      require属性：设置内容为必须填写项，否则无法提交（新属性）
+
+（8）      placeholder属性：设置默认值（暗沉色字体），当文本框获得焦点时被清空，对text、url、tel、email、password、search有效
+
+（9）      autocomplete属性：属性值为on/off，定义是否开启浏览器自动记忆功能
+
+（10）  autofocus属性：自动获得焦点
+
+（11）  accesskey属性：指定快捷键Windows中，指定快捷键后，按alt+“快捷键”，便会获得焦点
+
+（12）  tabindex属性 ：指定按tab键时，项目间的移动顺序
+
+
+————————————————
+版权声明：本文为CSDN博主「yin_991」的原创文章，遵循CC 4.0 BY-SA版权协议，转载请附上原文出处链接及本声明。
+原文链接：https://blog.csdn.net/yin_991/article/details/78375034

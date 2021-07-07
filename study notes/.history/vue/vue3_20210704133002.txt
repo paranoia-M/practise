@@ -1,0 +1,10 @@
+vue3 
+  响应性基础api
+    reactive: 
+      将解析所有的refs 同时维持ref的响应性
+      当ref分配给reactive property 时, ref将自动解包
+    readonly:
+      接受一个对象或ref
+
+    ref: 提供响应式引用
+      使任何响应式变量在任何地方起作用,ref接受参数并将其包裹在一个带有value property的对象返回
