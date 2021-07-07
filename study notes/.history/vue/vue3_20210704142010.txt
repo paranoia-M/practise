@@ -1,0 +1,16 @@
+vue3 
+  响应性基础api
+    reactive: 
+      将解析所有的refs 同时维持ref的响应性
+      当ref分配给reactive property 时, ref将自动解包
+    readonly:
+      接受一个对象或ref并返回原始对象的只读代理, 只读代理是深层的,任何被访问的嵌套property也是只读的
+      与 reactive 一样，如果任何 property 使用了 ref，当它通过代理访问时，则被自动解包
+    isProsy: 
+      检查对象是否由reactive 或 readonly 创建的proxy
+    isReactive:
+      检查对象是否由reactive 创建的响应式代理
+      如果该代理时readonly
+
+    ref: 提供响应式引用
+      使任何响应式变量在任何地方起作用,ref接受参数并将其包裹在一个带有value property的对象返回

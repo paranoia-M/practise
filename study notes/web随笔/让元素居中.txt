@@ -1,0 +1,128 @@
+让行内元素居中
+    行内元素水平居中：给父容器设置：text-align:center;
+
+让行内元素垂直居中
+    让文字的行高等于盒子的高度，可以让单行文本垂直居中
+     .father {
+        height: 20px;
+        line-height: 20px;
+    }
+
+让块级元素水平垂直居中
+    水平：
+    在 CSS 中对元素进行水平居中是非常简单的：如果它是一个行内元素，就对它的父容器应用 text-align: center；如果
+      它是一个块级元素，就对它自身应用 margin: auto或者 margin: 0 auto。
+    margin:auto;相当于margin:auto auto auto auto;四个值分别对应上右下左。其计算值取决于剩余空间。
+    
+    垂直：
+
+    方式1.绝对定位+margin(需要指定子元素的宽高，不推荐)
+    代码解释：我们先让子元素的左上角居中，然后向上移动宽度的一半(50px)，就达到了垂直居中的效果；水平居中的原理类似。
+    不足之处：要求指定子元素的宽高，才能写出 margin-top 和 margin-left 的属性值。
+    但是，在通常情况下，对那些需要居中的元素来说，其宽高往往是由其内容来决定的，不建议固定宽高
+          .father{
+            position: relative;
+            min-height: 500px;
+            background: pink;
+        }
+        .son {
+            position: absolute;
+            width: 200px;  ---
+            height: 100px;  ---
+            background: red;
+            top: 50%;
+            left: 50%;
+            margin-top: -50px;  ---
+            margin-left: -100px; ---
+        }
+    </style>
+</head>
+<body>
+
+
+    方式2.绝对定位+translate(无需指定子元素的宽高，推荐)
+        .father{
+        position: relative;
+        min-height: 500px;
+        background: pink;
+        }
+        .son {
+        position: absolute;
+        background: red;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        这种方法在没有指定子元素宽高的情况下，也能让其在父容器中垂直居中
+        因为translate()函数中使用百分比时，是以元素自身的宽度和高度为基准进行换算和移动
+
+    方式3.flex布局
+    将父容器设置为flex布局，再给父容器加属性justify—content：center；
+    这样子元素就能水平居中了，再给父元素加 aline-items：center；子元素就能垂直居中
+            .father{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: pink;
+        }
+        .son {
+            background: red;
+    方式4.flex布局+margin:auto   
+    给父容器设置display：flex；在给指定的子元素设置margin：auto； 
+    即可让这个指定的子元素在剩余空间里，水平垂直居中
+            .father{
+            display: flex;
+            min-height: 100vh;
+            background: pink;
+        }
+        .son {
+            margin: auto;
+            background: red;
+让导航栏的页脚显示在浏览器下面
+    .g-container {
+    height: 100vh;
+    display: flex;  ++++
+    flex-direction: column;   
+}
+ 
+.g-footer {
+    margin-top: auto;   ++++
+    flex-shrink: 0;
+    height: 30px;
+    background: deeppink;
+
+让导航栏里的列表排列
+    .g-nav {
+    display: flex;  ++++    (justify-content: space-between)  
+}
+ 
+.g-login {
+    margin-left: auto;  ++++ (对最后一个列表使用)
+
+body {
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    flex: 1 0 auto;
+}
+// flex: 1 0 auto; 的作用
+main {
+    flex-grow: 1; /*容器有剩余空间时，main区域会扩展*/
+    flex-shrink: 0; /*容器有不足空间时，main区域不会收缩*/
+    flex-basis: auto; /*main区域高度的基准值为main内容自动高度*/
+}
+
+.grid__container {
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    }
+在Flexbox布局模块中，当flex取的值是一个单值（无单位的数），比如示例中的flex:1，它会当作显式的设置了flex-grow: 1。浏览器计算出来的flex：
+
+
+
+
+
+
+

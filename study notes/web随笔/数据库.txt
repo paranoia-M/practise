@@ -1,0 +1,16 @@
+添加表
+    INSERT INTO 表 VALUES  多个列表
+修改数据
+    UPDATE 表 SET 属性 WHERE NAME=x
+删除
+    DELETE FROM 表 WHERE age=20;
+恢复数据
+     INSERT INTO 表 SELECT*FROM t_back
+
+流程：
+    1.设计数据库课程表
+    2.Java 数据库访问层的设计(util[工具类] entity[实体] dao[添加 删除 修改 查看])
+        src目录下三个包
+        实体类对应数据库t_course表
+        数据库访问工具类 util
+    3.

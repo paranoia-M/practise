@@ -1,0 +1,373 @@
+Buffer缓冲器
+    Buffer对象用于表示固定长度的字节序列，许多 Node.js API 都支持 Buffer
+    Buffer 类是 JavaScript 的 Uint8Array 类的子类，且继承时带上了涵盖额外用例的方法
+    Buffer 类在全局作用域中
+        // 创建长度为10，以0填充的Buffer
+        const buf1 = Buffer.alloc(10);
+        // 创建长度为10，以1填充的Buffer
+        const buf2 = Buffer.alloc(10,1);
+        // 创建一个包含字节[1,2,3]的Buffer
+        const buf4 = Buffer.from([1,2,3])
+        // 创建一个包含字节[1,1,1,1]的Buffer
+        // 其中所有条目均使用 `(value & 255)` 进行截断以符合 0-255 的范围。
+        const buf5 = Buffer.form([257,257.5,-255,'1'])
+        // 创建一个 Buffer，其中包含字符串 'tést' 的 UTF-8 编码字节：
+        // [0x74, 0xc3, 0xa9, 0x73, 0x74]（以十六进制表示）
+        // [116, 195, 169, 115, 116]（以十进制表示）
+        const buf6 = Buffer.from('tést');
+        // 创建一个包含 Latin-1 字节 [0x74, 0xe9, 0x73, 0x74] 的 Buffer。
+        const buf7 = Buffer.from('tést', 'latin1');
+
+    Buffer与字符编码
+        当在 Buffer 和字符串之间转换时，可以指定字符编码。 如果未指定字符编码，则使用 UTF-8 作为默认值。
+        const buf = Buffer.form('hello word', 'utf8')
+        Node.js当前支持字符编码
+            'utf8'  多字节编码的 Unicode 字符 许多网页和其他文档格式都使用 UTF-8。 这是默认的字符编码。
+            'utf16le' 多字节编码的 Unicode 字符。 与 'utf8' 不同，字符串中的每个字符都会使用 2 个或 4 个字节进行编码。 Node.js 仅支持 UTF-16 的小端序变体。
+            'latin1' Latin-1 代表 ISO-8859-1。 此字符编码仅支持从 U+0000 到 U+00FF 的 Unicode 字符。 每个字符使用单个字节进行编码。 超出该范围的字符会被截断，并映射成该范围内的字符。
+        使用以上方法之一将 Buffer 转换为字符串，称为解码；将字符串转换为 Buffer，称为编码。
+    Buffer 与 TypedArray
+        Buffer 实例也是 JavaScript 的 Uint8Array 和 TypedArray 实例。 所有的 TypedArray 方法在 Buffer 上也可用。 但是， Buffer 的 API 和 TypedArray 的 API 之间存在细微的不兼容。
+        TypedArray#slice() 会创建 TypedArray 的片段的拷贝，而 Buffer#slice() 是在现有的 Buffer 上创建视图而不进行拷贝
+        buf.toString() 与它在 TypedArray 上的等价物并不兼容。
+        一些方法，例如 buf.indexOf()，支持额外的参数。
+            将 Buffer 传给 TypedArray 的构造函数，则会拷贝 Buffer 的内容（会被解析为整数数组，而不是目标类型的字节序列）。
+            传入 Buffer 底层的 ArrayBuffer，则会创建与 Buffer 共享其内存的 TypedArray
+    Buffer 与迭代器
+        Buffer实例可以使用for of 进行迭代
+        const buf = Buffer.form([1,2,3]);
+        for (const b of buf){
+            console.log(b);
+        }            
+
+    Buffer类
+        Buffer 类是一个全局变量，用于直接处理二进制数据。 它可以使用多种方式构建。
+    
+    Buffer.alloc(size[, fill[, encoding]])
+        size <integer> 新 Buffer 的期望长度
+        fill <string> | <Buffer> | <Uint8Array> | <integer> 用于预填充新 Buffer 的值。默认值: 0
+        encoding <string> 如果 fill 是一个字符串，则这是它的字符编码。默认值: 'utf8'。
+    
+    Buffer.allocUnsafe(size)
+        size <integer> 新建的 Buffer 的长度
+        对这个预分配的内部内存池的使用是调用 Buffer.alloc(size, fill) 和 Buffer.allocUnsafe(size).fill(fill) 两者之间的关键区别。 
+        Buffer.alloc(size, fill) 永远不会使用内部的 Buffer 池，
+        Buffer.allocUnsafe(size).fill(fill) 在 size 小于或等于 Buffer.poolSize 的一半时将会使用内部的 Buffer池。
+
+    Buffer.allocUnsafeSlow(size)
+        size <integer> 新建的 Buffer 的长度。
+        当开发人员需要在内存池中保留一小块内存时，可以使用 Buffer.allocUnsafeSlow() 创建一个非内存池的 Buffer 实例并拷贝相关的比特位出来。
+    
+    Buffer.byteLength(string[, encoding]) 
+        string <string> | <Buffer> | <TypedArray> | <DataView> | <ArrayBuffer> | <SharedArrayBuffer> 要计算长度的值。
+        encoding <string> 如果 string 是字符串，则这是它的字符编码。默认值: 'utf8'。
+        返回: <integer> string 中包含的字节数。
+    
+    Buffer.compare(buf1, buf2)
+        返回: <integer> -1、 0 或 1，取决于比较的结果。 有关详细信息，参见 buf.compare()。
+        比较 buf1 与 buf2，主要用于 Buffer 实例数组的排序。 相当于调用 buf1.compare(buf2)。
+
+    Buffer.concat(list[, totalLength])
+        list <Buffer[]> | <Uint8Array[]> 要合并的 Buffer 数组或 Uint8Array 数组。
+        totalLength <integer> 合并后 list 中的 Buffer 实例的总长度。
+            const bufA = Buffer.concat([buf1, buf2, buf3], totalLength);
+            const totalLength = buf1.length + buf2.length + buf3.length;
+
+    Buffer.from(array)
+        使用 0 – 255 范围内的字节数组 array 来分配一个新的 Buffer。 超出该范围的数组条目会被截断以适合它。
+        const buf = Buffer.from([0x62, 0x75, 0x66, 0x66, 0x65, 0x72]);
+        Buffer.from(array) 和 Buffer.from(string) 也可以像 Buffer.allocUnsafe() 一样使用内部的 Buffer 池。
+
+    Buffer.from(arrayBuffer[, byteOffset[, length]])
+        arrayBuffer <ArrayBuffer> | <SharedArrayBuffer> 一个 ArrayBuffer 或 SharedArrayBuffer，例如 TypedArray 的 .buffer 属性。
+        byteOffset <integer> 开始拷贝的索引。默认值: 0。
+        length <integer> 拷贝的字节数。默认值: arrayBuffer.byteLength - byteOffset。
+        const buf2 = Buffer.from(buf1, 0, 2);
+
+    Buffer.from(buffer)
+        buffer <Buffer> | <Uint8Array> 要拷贝数据的 Buffer 或 Uint8Array。
+        const buf1 = Buffer.from('buffer');
+        const buf2 = Buffer.from(buf1);
+
+    Buffer.from(object[, offsetOrEncoding[, length]])
+        object <Object> 支持 Symbol.toPrimitive 或 valueOf() 的对象。
+        offsetOrEncoding <integer> | <string> 字节偏移量或字符编码。
+        length <integer> 长度。
+        const buf = Buffer.from(new String('this is a test'));
+        class Foo {
+        [Symbol.toPrimitive]() {
+        return 'this is a test';
+            }
+        }
+        const buf = Buffer.from(new Foo(), 'utf8');
+
+    Buffer.from(string[, encoding])
+        string <string> 要编码的字符串。
+        encoding <string> string 的字符编码。默认值: 'utf8'。
+
+    Buffer.isBuffer(obj)
+
+    Buffer.isEncoding(encoding)
+
+    Buffer.poolSize
+        这是用于缓冲池的预分配的内部 Buffer 实例的大小（以字节为单位）。 该值可以修改。
+        <integer> 默认值: 8192。
+
+    buf[index]
+        索引操作符 [index] 可用于获取或设置 buf 中指定的 index 位置的八位字节。
+        该值指向单个字节，所以有效的值的范围是 0x00 至 0xFF（十六进制）、或 0 至 255（十进制）
+    
+    buf.buffer
+        <ArrayBuffer> 创建此 Buffer 对象时基于的底层 ArrayBuffer 对象。
+        const arrayBuffer = new ArrayBuffer(16);
+        const buffer = Buffer.from(arrayBuffer);
+        console.log(buffer.buffer === arrayBuffer);
+
+    buf.byteOffset
+        <integer> Buffer 底层的 ArrayBuffer 对象的 byteOffset。
+
+    buf.compare(target[, targetStart[, targetEnd[, sourceStart[, sourceEnd]]]])
+        target <Buffer> | <Uint8Array> 要与 buf 对比的 Buffer 或 Uint8Array。
+        targetStart <integer> target 中开始对比的偏移量。默认值: 0。
+        targetEnd <integer> target 中结束对比的偏移量（不包含）。默认值:
+        sourceStart <integer> buf 中开始对比的偏移量。默认值: 0
+        sourceEnd <integer> buf 中结束对比的偏移量（不包含）。默认值: buf.length。
+        返回: <integer>
+        console.log(buf1.compare(buf2, 5, 9, 0, 4));
+    
+    buf.copy(target[, targetStart[, sourceStart[, sourceEnd]]])
+        target <Buffer> | <Uint8Array> 要拷贝进的 Buffer 或 Uint8Array。
+        targetStart <integer> target 中开始写入之前要跳过的字节数。默认值: 0。
+        sourceStart <integer> buf 中开始拷贝的偏移量。默认值: 0。
+        sourceEnd <integer> buf 中结束拷贝的偏移量（不包含）。默认值: buf.length。
+        返回: <integer> 拷贝的字节数。
+        buf1.copy(buf2, 8, 16, 20);
+        // 拷贝 `buf1` 中第 16 至 19 字节偏移量的数据到 `buf2` 第 8 字节偏移量开始。
+    
+    buf.entries()
+        用 buf 的内容创建并返回一个 [index, byte] 形式的迭代器。        
+        const buf = Buffer.from('buffer');
+        for (const pair of buf.entries()) {
+        console.log(pair);
+        }
+
+    buf.equals(otherBuffer)
+        otherBuffer <Buffer> 要与 bur 对比的 Buffer 或 Uint8Array。
+
+    buf.fill(value[, offset[, end]][, encoding])
+        value <string> | <Buffer> | <Uint8Array> | <integer> 用来填充 buf 的值
+        offset <integer> 开始填充 buf 的偏移量。默认值: 0。
+        end <integer> 结束填充 buf 的偏移量（不包含）。默认值: buf.length。
+        encoding <string> 如果 value 是字符串，则指定 value 的字符编码。默认值: 'utf8'。
+        返回: <Buffer> buf 的引用。
+
+    buf.includes(value[, byteOffset][, encoding])
+        value <string> | <Buffer> | <Uint8Array> | <integer> 要查找的值。
+        byteOffset <integer> buf 中开始查找的偏移量。默认值: 0。
+        encoding <string> 如果 value 是字符串，则指定 value 的字符编码。默认值: 'utf8'。
+        返回: <boolean> 如果 buf 查找到 value，则返回 true，否则返回 false。
+    
+    buf.indexOf(value[, byteOffset][, encoding])
+        value <string> | <Buffer> | <Uint8Array> | <integer> 要查找的值。
+        byteOffset <integer> buf 中开始查找的偏移量。默认值: 0。
+        encoding <string> 如果 value 是字符串，则指定 value 的字符编码。默认值: 'utf8'。
+        返回: <integer> buf 中首次出现 value 的索引，如果 buf 没包含 value 则返回 -1。
+
+    buf.keys()
+        创建并返回 buf 键名（索引）的迭代器。
+            const buf = Buffer.from('buffer');
+            for (const key of buf.keys()) {
+            console.log(key);
+        }
+
+    buf.lastIndexOf(value[, byteOffset][, encoding])
+        value <string> | <Buffer> | <Uint8Array> | <integer> 要查找的值。
+        byteOffset <integer> buf 中开始查找的偏移量。默认值: buf.length - 1。
+        encoding <string> 如果 value 是字符串，则指定 value 的字符编码。默认值: 'utf8'。
+        返回: <integer> buf 中最后一次出现 value 的索引，如果 buf 没包含 value 则返回 -1。
+
+    buf.length
+        返回 buf 中的字节数。
+
+    buf.readBigInt64BE([offset])
+        offset <integer> 开始读取之前要跳过的字节数。必须满足：0 <= offset <= buf.length - 8。默认值: 0。
+        返回: <bigint>
+        从 buf 中指定的 offset 读取一个有符号大端序的 64 位整数值。
+
+    buf.readBigInt64LE([offset])
+        offset <integer> 开始读取之前要跳过的字节数。必须满足：0 <= offset <= buf.length - 8。默认值: 0。
+        返回: <bigint>
+        从 buf 中指定的 offset 读取一个有符号小端序的 64 位整数值。
+
+    buf.readBigUInt64BE([offset])
+        offset <integer> 开始读取之前要跳过的字节数。必须满足：0 <= offset <= buf.length - 8。默认值: 0。
+        返回: <bigint>
+        从 buf 中指定的 offset 读取一个无符号大端序的 64 位整数值。
+
+    buf.readBigUInt64LE([offset])
+        offset <integer> 开始读取之前要跳过的字节数。必须满足：0 <= offset <= buf.length - 8。默认值: 0。
+        返回: <bigint>
+        从 buf 中指定的 offset 读取一个无符号小端序的 64 位整数值。
+
+    buf.readDoubleBE([offset])
+        offset <integer> 开始读取之前要跳过的字节数。必须满足：0 <= offset <= buf.length - 8。默认值: 0。
+        返回: <number>
+        从 buf 中指定的 offset 读取一个 64 位的大端序双精度值。
+
+    buf.readDoubleLE([offset])
+        offset <integer> 开始读取之前要跳过的字节数。必须满足：0 <= offset <= buf.length - 8。默认值: 0。
+        返回: <number>
+        从 buf 中指定的 offset 读取一个 64 位的小端序双精度值。
+
+    buf.readFloatBE([offset])
+        offset <integer> 开始读取之前要跳过的字节数。必须满足：0 <= offset <= buf.length - 4。默认值: 0。
+        返回: <number>
+        从 buf 中指定的 offset 读取一个 32 位的大端序浮点值。
+
+    buf.readFloatLE([offset])
+        offset <integer> 开始读取之前要跳过的字节数。必须满足：0 <= offset <= buf.length - 4。默认值: 0。
+        返回: <number>
+        从 buf 中指定的 offset 读取一个 32 位的小端序浮点值。
+
+    buf.readInt8([offset])
+        offset <integer> 开始读取之前要跳过的字节数。必须满足：0 <= offset <= buf.length - 1。默认值: 0。
+        返回: <integer> 
+        从 buf 中指定的 offset 读取一个有符号的 8 位整数值。
+        Buffer 中读取的整数值会被解析为二进制补码值。
+
+    buf.readInt16BE([offset])
+        offset <integer> 开始读取之前要跳过的字节数。必须满足：0 <= offset <= buf.length - 2。默认值: 0。
+        返回: <integer> 
+        从 buf 中指定的 offset 读取一个有符号大端序的 16 位整数值。
+        从 Buffer 中读取的整数值会被解析为二进制补码值。
+
+    buf.readInt16LE([offset])
+        offset <integer> 开始读取之前要跳过的字节数。必须满足：0 <= offset <= buf.length - 2。默认值: 0。
+        返回: <integer>
+        从 buf 中指定的 offset 读取一个有符号小端序的 16 位整数值。
+        从 Buffer 中读取的整数值会被解析为二进制补码值。
+
+    buf.readInt32BE([offset])
+
+    buf.readInt32LE([offset])
+
+    buf.readIntBE(offset, byteLength)
+
+    buf.readIntLE(offset, byteLength)
+
+    buf.readUInt8([offset])
+
+    buf.readUInt16BE([offset])
+
+    buf.readUInt16LE([offset])
+
+    buf.readUInt32BE([offset])
+
+    buf.readUInt32LE([offset])
+
+    buf.readUIntBE(offset, byteLength)
+
+    buf.readUIntLE(offset, byteLength)
+
+    buf.subarray([start[, end]])
+        start <integer> 新 Buffer 开始的位置。默认值: 0。
+        end <integer> 新 Buffer 结束的位置（不包含）。默认值: buf.length。
+        返回: <Buffer>
+        返回一个新的 Buffer，它引用与原始的 Buffer 相同的内存，但是由 start 和 end 索引进行偏移和裁剪。
+    
+    buf.slice([start[, end]])
+        start <integer> 新 Buffer 开始的位置。默认值: 0
+        end <integer> 新 Buffer 结束的位置（不包含）。默认值: buf.length。
+        返回: <Buffer>
+        返回一个新的 Buffer，它引用与原始的 Buffer 相同的内存，但是由 start 和 end 索引进行偏移和裁剪。
+
+    buf.swap16()
+        返回: <Buffer> buf 的引用。
+        将 buf 解析成无符号的 16 位整数的数组，并且以字节顺序原地进行交换。 如果 buf.length 不是 2 的倍数，则抛出 ERR_INVALID_BUFFER_SIZE。
+
+    buf.swap32()
+        返回: <Buffer> buf 的引用
+        将 buf 解析成无符号的 32 位整数的数组，并且以字节顺序原地进行交换。 如果 buf.length 不是 4 的倍数，则抛出 ERR_INVALID_BUFFER_SIZE。
+
+    buf.swap64()
+        返回: <Buffer> buf 的引用。
+        将 buf 解析成 64 位数值的数组，并且以字节顺序原地进行交换。 如果 buf.length 不是 8 的倍数，则抛出 ERR_INVALID_BUFFER_SIZE。
+
+    buf.toJSON()
+        返回: <Object>
+        返回 buf 的 JSON 格式。 当字符串化 Buffer 实例时，JSON.stringify() 会调用该函数。
+
+    buf.toString([encoding[, start[, end]]])
+        encoding <string> 使用的字符编码。默认值: 'utf8'。
+        start <integer> 开始解码的字节偏移量。默认值: 0。
+        end <integer> 结束解码的字节偏移量（不包含）。默认值: buf.length。
+        返回: <string>    
+        根据 encoding 指定的字符编码将 buf 解码成字符串。 传入 start 和 end 可以只解码 buf 的子集。
+
+    buf.values()
+        返回: <Iterator>
+        创建并返回 buf 键值（字节）的迭代器。 当对 Buffer 使用 for..of 时会调用该函数。
+
+    buf.write(string[, offset[, length]][, encoding])
+        string <string> 要写入 buf 的字符串。
+        offset <integer> 开始写入 string 之前要跳过的字节数。默认值: 0。
+        length <integer> 要写入的最大字节数（写入的字节数不会超出 buf.length - offset）。默认值: buf.length - offset。
+        encoding <string> string 的字符编码。默认值: 'utf8'。
+        返回: <integer> 已写入的字节数。
+        根据 encoding 指定的字符编码将 string 写入到 buf 中的 offset 位置。 length 参数是要写入的字节数
+
+    buf.writeBigInt64BE(value[, offset])
+        value <bigint> 要写入 buf 的数值。
+        offset <integer> 开始写入之前要跳过的字节数。必须满足：0 <= offset <= buf.length - 8。默认值: 0。
+        返回: <integer> offset 加上已写入的字节数。
+        将 value 作为大端序写入到 buf 中指定的 offset 位置。
+
+    buf.writeBigInt64LE(value[, offset])
+
+    buf.writeBigUInt64BE(value[, offset])
+
+    buf.writeBigUInt64LE(value[, offset])
+
+    buf.writeDoubleBE(value[, offset])
+
+    buf.writeDoubleLE(value[, offset])
+
+    buf.writeFloatBE(value[, offset])
+
+    buf.writeFloatLE(value[, offset])
+
+    buf.writeInt8(value[, offset])
+
+    buf.writeInt16BE(value[, offset])
+
+    buf.writeInt16LE(value[, offset])
+
+    buf.writeInt32BE(value[, offset])
+
+    buf.writeInt32LE(value[, offset])
+
+    buf.writeIntBE(value, offset, byteLength)
+
+    buf.writeIntLE(value, offset, byteLength)
+
+    buf.writeUInt8(value[, offset])
+
+    buf.writeUInt16LE(value[, offset])
+
+    buf.writeUInt32BE(value[, offset])
+
+    buf.writeUInt32LE(value[, offset])
+
+    buf.writeUIntBE(value, offset, byteLength)
+
+    buf.writeUIntLE(value, offset, byteLength)
+
+
+
+
+
+
+
+
+
+

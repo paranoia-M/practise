@@ -1,0 +1,534 @@
+vue系统指令
+    插值表达式 {{}}  但有限制性，每个绑定都只能包含单个表达式
+        可支持 {{number+1}}  {{ ok ? 'YES' : 'NO' }}  {{ name == 'smyhvae' ? 'true' : 'false' }}  {{ message.split('').reverse().join('') }}
+    v-cloak 保持和元素实例的相关联，直到结束编译后自动消失。意思就是在运行代码时，{{name}}这个内容，在网速很慢的情况下，一开始会直接显示{{name}}这个内容，
+        等网络加载完成了，才会显示smyhvae。那这个闪烁的问题该怎么解决呢？
+        通过css
+        [v-cloak] {
+                display: none;
+        }
+        在样式表里设置：只要是有 v-cloak 属性的标签，我都让它隐藏。
+        直到 Vue实例化完毕以后，v-cloak 会自动消失，那么对应的css样式就会失去作用，最终将span中的内容呈现给用户 
+    v-text 可以将一个变量的值渲染到指定的元素中 作用类似于插值表达式。
+        他与插值表达式的差异:
+            1.v-text 没有闪烁的问题，因为它是放在属性里的。
+            2.插值表达式只会替换自己的这个占位符，并不会把整个元素的内容清空。v-text 会覆盖元素中原本的内容。
+    v-html v-text会被解析成纯文本，v-html会被解析成html元素
+        尽量不使用
+    v-bind 属性绑定机制
+        <!-- value里的值只是简单的字符串 -->
+        <input type="text" value="name">
+        <!-- 加上 v-bind 之后，value里的值是 Vue 里的变量 -->
+        <input type="text" v-bind:value="name">
+        <!-- 超链接后面的path是 Vue 里面的变量 -->
+        <a v-bind="{href:'http://www.baidu.com/'+path}">超链接</a>
+    v-on 事件绑定机制
+        v-on:click: 点击事件
+         <button v-on:click="change">改变name的值</button>
+            methods: {
+            change: function() { //上面的button按钮的点击事件
+            this.name += '1';
+        }        
+        v-on 简写形式
+            <button v-on:click="change">改变name的值</button>
+            <button @click="change">改变name的值</button>
+        v-on 的常用事件
+            v-on:click
+            v-on:keydown
+            v-on:keyup
+            v-on:mousedown
+            v-on:mouseover
+            v-on:submit
+        v-pre 原封不变的显示标签里面的内容
+        
+
+v-on的事件修饰符
+    v-on的常见修饰符
+        .stop 阻止冒泡，本质是调用 event.stopPropagation()。
+        .prevent 阻止默认事件 质是调用 event.preventDefault()。
+        .capture 添加事件监听器时，使用捕获的方式（也就是说，事件采用捕获的方式，而不是采用冒泡的方式）
+        .self 只有当事件在该元素本身(比如不是子元素)触发时，才会触发回调
+        .once 事件只触发一次
+        .{keyCode | keyAlias} 只当事件是从监听器绑定的元素本身触发时，才会触发回调
+                <!-- click事件 -->
+        <button v-on:click="doThis"></button>
+
+        <!-- 缩写 -->
+        <button @click="doThis"></button>
+
+        <!-- 内联语句 -->
+        <button v-on:click="doThat('hello', $event)"></button>
+
+        <!-- 阻止冒泡 -->
+        <button @click.stop="doThis"></button>
+
+        <!-- 阻止默认行为 -->
+        <button @click.prevent="doThis"></button>
+
+        <!-- 阻止默认行为，没有表达式 -->
+        <form @submit.prevent></form>
+
+        <!--  串联修饰符 -->
+        <button @click.stop.prevent="doThis"></button>
+
+vue的系统指令二
+    v-model 双向数据绑定 只能用于表单元素或者自定义组件 input标签里修改内容data里的name的值自动更新
+    v-bind：只能实现数据的单向绑定，从 M 自动绑定到 V。
+    v-model：只有v-model才能实现双向数据绑定。注意，v-model 后面不需要跟冒号，
+    vue中通过属性绑定为元素设置css样式 
+        <h1 class="my-red my-thin">我是生命壹号，smyhvae</h1>
+        <h1 :class="['my-red', 'my-thin']">我是smyhvae，生命壹号</h1> vue写法，数组形式
+        <h1 :class="[flag?'my-active':'']">我是smyhvae，生命壹号</h1>  vue写法，三元表达式
+        <h1 :class="[ {'my-active':flag} ]">我是smyhvae，生命壹号</h1> vue写法， 在数组中使用对象来替代三元表达式
+        <h1 :class="{style1:true, style2:false}">我是smyhvae，生命壹号</h1>  vue写法， 直接使用对象
+    vue中通过属性绑定为元素设置style行内样式
+        写法一：直接在元素上通过 :style 的形式，书写样式对象 <h1 :style="{color: 'red', 'font-size': '20px'}">我是生命壹号，smyhvae</h1>
+        写法二：将样式对象，定义到 data 中，并直接引用到 :style 中。 <h1 :style="styleObj">我是生命壹号，smyhvae</h1>
+        写法三：在 :style 中通过数组，引用多个 data 上的样式对象。<h1 :style="[ styleObj1, styleObj2 ]">我是生命壹号，smyhvae</h1>
+    v-for for循环的四种使用方式
+        比如给ul中的li分别赋值时，不用循环时就要挨个赋值
+        <li v-for="item in list">{{item}}</li>
+        方式一.普通数组的遍历
+            <!-- 括号里如果写两个参数：第一个参数代表值，第二个参数代表index 索引 -->
+            <li v-for="(item,index) in arr1">值：{{item}} --- 索引：{{index}}</li>
+        方式二.对象数组的遍历
+            <!-- 对象数组的遍历。括号里如果写两个参数：第一个参数代表数组的单个item，第二个参数代表 index 索引-->
+            <li v-for="(item, index) in dataList">姓名：{{item.name}} --- 年龄：{{item.age}} --- 索引：{{index}}</li>
+        方式三.对象的遍历
+            <!-- 括号里如果写三个参数：则第一个参数代表value，第二个参数代表key，第三个参数代表index -->
+            <li v-for="(value,key,index) in obj1">值：{{value}} --- 键：{{key}} --- index：{{index}} </li>
+        方法四.遍历数字
+            <!-- 注意：如果使用 v-for 遍历数字的话，前面的 myCount 值从 1 开始算起 -->
+            <li v-for="myCount in 10">这是第 {{myCount}}次循环</li>
+    v-if 设置元素的显示和隐藏(添加删除dom元素)
+        根据表达式的值的真假条件，；来决定是否渲染元素，false不渲染，true渲染
+    v-show：设置元素的显示和隐藏（在元素上添加/移除style="display:none"属性）
+        v-if v-show 都能实现对元素的隐藏，区别
+            v-if：每次都会重新添加/删除DOM元素
+            v-show：每次不会重新进行DOM的添加/删除操作，只是在这个元素上添加/移除style="display:none"属性，表示节点的显示和隐藏。
+            v-if：有较高的切换性能消耗。这个很好理解，毕竟每次都要进行dom的添加／删除操作。
+            v-show：有较高的初始渲染消耗。也就是说，即使一开始v-show="false"，该节点也会被创建，只是隐藏起来了。而v-if="false"的节点，根本就不会被创建。 
+        
+vue 举例，列表功能
+
+vue过滤器概念
+    概念：Vue.js 允许我们自定义过滤器，可被用作一些常见的文本格式化。过滤器可以用在两个地方：
+        mustache 插值表达式、 v-bind表达式。过滤器应该被添加在 JavaScript 表达式的尾部，由“管道”符指示。
+    全局该过滤器的基本使用
+        我们可以用全局方法Vue.filter()自定义一个全局过滤器。这样的话，每一个Vue的对象实例（每一个VM实例）都可以拿到这个过滤器。
+        它接收两个参数：过滤器的名称 、过滤器函数。
+          <p>{{ msg | msgFormat }</p>
+          管道符前面的msg：要把 msg 这段文本进行过滤，
+          管道符后面的msgFormat：是通过msgFormat这个过滤器进行来操作
+        定义过滤器msgFormat
+        // Vue.filter 中的第一个参数是过滤器的名称，第二个参数是具体的过滤器函数
+        // 定义一个 Vue 全局的过滤器，名字叫做  msgFormat
+        Vue.filter('msgFormat', function (myMsg) {  // function 的第一个参数指的是管道符前面的 msg
+            // 字符串的  replace 方法，第一个参数，除了可写一个 字符串之外，还可以定义一个正则
+            return myMsg.replace(/单纯/g, '邪恶')
+        })
+
+v-on的按键修饰符
+    vue内置的按键修饰符(监听键盘输入的事件)
+    .enter
+    .tab
+    .delete(捕获 删除 和 退格 键)
+    .esc
+    .space
+    .up
+    .down
+    .left
+    .right
+    1.0.8+版本: 支持单字母的按键别名
+    自定义按键修饰符
+        每个键盘的按键都有键盘码，如F12 的键盘码为113
+        则 <input type="text" v-model="formData.name" @keyup.113="addData">
+    自定义全局按键修饰符
+        Vue.config.keyCodes.f2 = 113;
+    自定义全局指令(使用Vue.directive())
+        // 自定义全局指令v-focus 让文本框获取焦点
+        // 参数一:指令的名称 定义时不加v- 调用时加v-
+        // 参数二:是一个对象，这个对象身上，有一些指令相关的函数，这些函数可以在特定的阶段，执行相关的操作
+        Vue.directive('focus',{
+            // 在每个函数中第一个参数一定是el,表示被绑定了指令的哪个元素,这个 el 参数，是一个原生的JS对象（DOM对象）
+            bind: function(el){
+                // 每当指令绑定到元素上的时候，会立即执行这个 bind 函数，【只执行一次】
+                // 在元素 刚绑定了指令的时候，还没有 插入到 DOM中去，这时候，调用 focus 方法没有作用
+                // el.focus()
+            },
+            inserted: function(el){  // inserted 表示元素 插入到DOM中的时候，会执行 inserted 函数【触发1次】
+                el.focus();
+                // 和JS行为有关的操作，最好在 inserted 中去执行，放置 JS行为不生效
+            },
+            updated:{
+                // 当VNode更新的时候，会执行 updated， 【可能会触发多次】
+            },
+        })
+    自定义全局指令：使用钩子函数的第二个binding参数拿到传递的值
+  
+Vue实例的生命周期函数
+    从Vue实例创建、运行、到销毁期间，总是伴随着各种各样的事件，这些事件，统称为生命周期。
+    生命周期主要分为三类
+    1.创建期间的生命周期函数
+        beforeCreate:实例刚在内存中被创建出来，此时，还没有初始化好data和methods属性
+        created:实例已经在内存中创建好，此时data和method已经创建好，此时还没有开始编译模板，可以在这里进行ajax请求
+        beforeMount:此时已经完成了模板的编译，但还没有挂在到页面中
+        mounted:此时，已经将编译好的模板，挂在到了页面指定的容器中显示了
+    2.运行期间的生命周期函数
+        beforeUpdate:状态更新之前执行次函数，此时data中的状态是最新的，但是页面上显示的数据还是旧的，因为此时还没有开始重新渲染dom节点
+        updated:实例更新完毕后调用此函数，此时data中的状态值和界面上显示的数据都已完成了更新，界面重新被渲染好了
+            数据发生变化时，会触发这两个方法。不过，我们一般用watch来做。
+    3.销毁期间的生命周期函数
+        beforeDestroy:实例销毁之前调用，在这一步实例仍然可用
+        destroyed:vue实例销毁后调用，调用后，vue实例知识的所有东西都会解绑定，所有事件监听会被移除，所有的子实例也会被销毁
+            可以在beforeDestroy里清除定时器、或清除事件绑定
+
+Vue中的ajax请求
+    vue-resource是Vue高度集成的第三方包
+    vue-resource 依赖于 Vue。所以，我们要按照先后顺序，导入vue.js和vue-resource.js文件。
+    vue.js文件向Windows对象暴露了Vue这个关键词；vue-resource.js向Vue身上挂载了this.$http这个属性。于是，我们可以直接写this.$http.get或者this.$http.post或者this.$http.jsonp来调用。
+    get请求
+        this.$http.get(url)
+            .then(function (result){
+                // 当发起get请求之后，通过 .then 来设置成功的回调函数
+                // response.body就是服务器返回的成功的数据
+                console.log(result.body);
+                let result = result.body;
+
+                })
+    post请求
+        // 方法：$http.post(url, 传给服务器的请求体中的数据， {emulateJSON:true})
+        // 通过 post 方法的第三个参数{ emulateJSON: true } ，来设置 提交的内容类型 为 普通表单数据格式
+        this.$http.post(url, {name: '奔驰'}，{emulateJSON: true}
+        .then(function (response){
+            alert(response.body.message);
+        })
+        
+Vue动画 使用过渡类名实现动画
+    动画进入
+        v-enter: 动画进入之前的初始状态
+        v-enter-to: 动画进入之后结束的状态
+        v-enter-active: 动画进入的时间段
+        前两个是时间点，最后一个是时间段
+    动画离开
+        v-leave: 动画离开之前的初始化状态
+        v-leave-to: 动画离开之后的结束状态
+        v-leave-active: 动画离开的时间段
+        前两个是时间点，最后一个是时间段
+    修改过度类名前缀 v-xxx 开头的设置 假设两个DOM都使用transition进行包裹，那么则它们的DOM元素中都具备了相同的动画
+    如果想分开两个DOM元素的定义，则可以修改过渡名前缀
+        第一步: 自定义别名
+           <transition name="my">
+           </transition>
+        第二步: 使用my-enter  .my-leave-to 这些类名
+    使用第三方类库animate.css类库实现动画
+        <transition enter-active-class="animated bounceIn" leave-active-class="animated bounceOut" :duration="500">
+            <h3 v-if="flag">这是一个H3</h3>
+        </transition>
+        等价于
+        <transition enter-active-class="bounceIn" leave-active-class="bounceOut" :duration="500">
+            <h3 v-if="flag" class="animated">这是一个H3</h3>
+        </transition>
+
+        enter-active-class="bounceIn" 入场动画
+        leave-active-class="bounceOut" 离场动画
+        :duration="500" 设置入场 离场 持续时间
+        :duration="{ enter: 1000, leave: 300 }" 分别设置入场 离场 持续时间
+    钩子函数实现半场动画
+        只有出场动画、没有离场动画，这种就是属于半场动画。 收藏商品时出现的的动画再次点击时不能出现
+        动画的钩子函数介绍
+            可以在属性中声明 JavaScript 钩子函数：（这八个钩子函数可以理解成是动画的生命周期）
+            <transition
+            v-on:before-enter:"beforeEnter"
+            v-on:enter="enter"
+            v-on:after-enter="afterEnter"
+            v-on:enter-cancelled="enterCancelled"
+
+            v-on:before-leave="beforeLeave"
+            v-on:leave="leave"
+            v-on:after-leave="afterLeave"
+            v-on:leave-cancelled="leaveCancelled"
+            >
+            </transition>
+
+            上面八个钩子函数中 四个进场 四个离场对应八个事件，我们紧接着在methods中定义八个函数
+            定义半场动画时只写一半就可以
+            当只用 JavaScript 过渡的时候，在enter和leave中必须使用done进行回调。否则，它们将被同步调用，过渡会立即完成。
+        使用transition-group元素实现列表动画
+            在一个<ul>列表中，如果我想给指定的某个li添加动画效果，该怎么做呢？（需要声明的是，这些li是用v-for循环进行遍历的）
+            如果我们用<transition>把li包裹起来，就会让所有的li都具备了动画，这显然是不可取的,应该有transition-group进行包裹
+
+Vue组件的定义和注册
+    什么是组件
+        组件： 组件的出现，就是为了拆分Vue实例的代码量的，能够让我们以不同的组件，来划分不同的功能模块，将来我们需要什么样的功能，就可以去调用对应的组件即可。
+    模块化和组件化的区别
+        模块化：是从代码逻辑的角度进行划分的；方便代码分层开发，保证每个功能模块的职能单一
+        组件化：是从UI界面的角度进行划分的；前端的组件化，方便UI组件的重用
+    全局组件的定义和注册
+        组件Component是 Vue.js 最强大的功能之一。组件可以扩展 HTML 元素，封装可重用的代码。
+        写法一:使用Vue.extend方法定义组件，使用 Vue.component方法注册组件
+            <script>
+            // 第一步 使用Vue.extend定义组件
+            let myAccount = Vue.extend({
+                template: '<div><h2>登录页面</h2> <h3>注册页面</h3></div>' // 通过 template 属性，指定了组件要展示的HTML结构。template 是 Vue 中的关键字，不能改
+            });
+            // 第二步 使用Vue.component 注册组件
+            // Vue.component('组件的名称', 创建出来的组件模板对象)
+            Vue.component('my-account', 'myAccount')//第一个参数是组件的名称（标签名），第二个参数是模板对象
+            new Vue({
+                el: '#app',
+            });
+            </script>
+
+            使用时用 <div id="app"> <my-account></my-account> </div>
+                注意1.如果在注册时，组件的名称是驼峰命名那么，在标签中使用组件时，需要把大写的驼峰改为小写的字母，同时两个单词之间使用-进行连接：
+                    <my-component> </my-component>
+                    所以，为了避免名字不一致的问题，我们注册组件时，组件的名称可以直接写成my-component。比如：（避免驼峰不一致的建议写法）
+                    Vue.component('my-component', myAccount);
+                注意2.template: '<div><h2>登录页面</h2> <h3>注册页面</h3></div>' 
+                    必须用<div></div>包裹起来,否则没有用
+        写法二.Vue.component方法定义，注册组件一步到位
+                <script>
+                //定义、注册组件：第一个参数是组件的名称（标签名），第二个参数是组件的定义
+                Vue.component('my-account', {
+                    template: '<div><h2>登录页面</h2> <h3>注册页面</h3></div>'   // template 是 Vue 中的关键字，不能改。
+                });
+                new Vue ({
+                    el: '#app',
+                });
+                </script>
+        写法三.将组件定义到template标签中
+                <body>
+                // 定义模板
+                <template id="myAccount">
+                    <div>
+                        <h2>登陆</h2>
+                        <h2>注册</h2>
+                    </div>
+                </template>
+
+                <div id="app">
+                    // 使用组件
+                    <account></account>
+                </div>
+                <script>
+                // 定义注册组件
+                Vue.component('account', {
+                    template: '#myAccount',
+                });
+
+                new Vue({
+                    el: "#app",
+                });
+                </script>
+                </body>
+    使用components定义私有组件
+        只有当前这个Vue实例才可以使用这个组件。
+            <template id="loginTmp">
+            <h3>这是私有的login组件</h3>
+            </template>
+
+            <div id="app">
+            <!-- 调用Vue实例内部的私有组件 -->
+                <my-login></my-login>
+            </div>
+
+            <script>
+                new Vue({
+                    el: '#app',
+                    data: {},
+                    components: {
+                        // 定义、注册Vue实例内部的私有组件
+                        `my-login`: {
+                            template: '#loginTmp'
+                        }
+                    }
+                })
+            </script>
+    为组件添加data和methods
+        既然组件是一个页面，那么，页面中可能会有一些功能要动态展示。因此，我们有必要为组件添加 data 和 methods。
+        注意，在为组件添加数据时，data不再是对象了，而是function，而且要通过 return的形式进行返回；否则，页面上是无法看到效果的。通过 function返回对象的形式来定义data，作用是：
+            1.上方代码中，组件<account>被调用了两次（不像根组件那样只能调用一次），但是每个组件里的数据 myData是各自独立的，不产生冲突。
+            2.换而言之，通过函数返回对象的目的，是为了让每个组件都有自己独立的数据存储，而不应该共享一套数据。
+    为什么组件的data必须是一个function
+        每当我们创建一个新的组件实例时，就会调用data函数，data函数里会return一个新开辟的对象数据。这样做，就可以保证每个组件实例有独立的数据存储。
+    组件的切换
+        使用v-if和v-else结合flag进行切换
+        使用Vue提供的<component>标签实现组件切换可以进行多个组件切换
+
+Vue组件之间的传值
+    父组件向子组件传值
+        Vue实例就是一个父组件，而我们自定义的组件（包括全局组件、私有组件）就是子组件
+        重点:需要注意的是，子组件不能直接使用父组件中的数据。父组件可以通过props属性向子组件传值        
+    父组件给子组件的传值步骤
+        1.在子组件的props中声明父亲传递过来的数据
+        2.定义子组件模板时，使用props中的属性
+        3.父组件在引用子组件时，进行属性绑定
+    子组件中，data中的数据和props中的数据的区别
+        1.子组件中的 data 数据，并不是通过 父组件传递过来的，而是子组件自身私有的比如： 子组件通过 Ajax ，请求回来的数据，都可以放到 data 身上。props 中的数据，都是通过 父组件 传递给子组件的。
+        2.data中的数据是可读可写的；props中的属性只是可读的，无法重新赋值，重新赋值会报错（也就是说，子组件不要直接去修改父组件中的数据）。
+    父组件将方法传递给子组件
+        父组件通过事件绑定机制，将父组件的方法传递给子组件
+            【第一步】。意思是说，`show`是父组件的方法名，`parent-show`是自定义的时间属性，稍后要在子组件中用到
+            【第二步】按照正常的写法来：点击按钮，调用子组件的方法 
+            【第三步】 在子组件的方法中，通过 emit 触发父组件的方法
+    子组件向父组件传值
+
+Vue router路由
+    后端路由
+        对于普通的网站，所有的超链接都是URL地址，所有的URL地址都对应服务器上对应的资源。
+        当前端输入url请求资源时，服务器会监听到是什么url地址，那后端会返回什么样的资源呢？后端这个处理的过程就是通过路由来分发的
+        总结：后端路由，就是把所有url地址都对应到服务器的资源，这个对应关系就是路由
+    前端路由
+        对于单页面应用程序来说，主要通过URL中的hash（url地址中的#号）来实现不同页面之间的切换。
+        同时，hash有一个特点：HTTP请求中不会包含hash相关的内容。所以，单页面程序中的页面跳转主要用hash实现。
+        总结：在单页应用程序中，这种通过hash改变来切换页面的方式，称作前端路由（区别于后端路由）
+        定义：在单页面应用，大部分页面结构不变，只改变部分内容的使用
+        优点：用户体验好，不需要每次都从服务器全部获取，快速展现给用户
+        缺点：使用浏览器的前进，后退键的时候会重新发送请求，没有合理地利用缓存。单页面无法记住之前滚动的位置，无法在前进，后退的时候记住滚动的位置
+ 
+vue 3 引用
+<script src="https://unpkg.com/vue@next"></script> 
+生成项目
+    1.  npm install -g vue-cli
+    2.  vue init webpack vue-todos
+运行项目
+    cd vue-todos
+    npm install
+    npm run dev
+选择模板
+    vue init <template-name> <project-name>
+
+官方文档
+    vue 3 引用
+    <script src="https://unpkg.com/vue@next"></script>
+
+
+    处理用户输入: v-on
+        单项绑定；v-bind
+        Vue 还提供了使形式输入和应用状态之间的双向绑定变得轻而易举的指令：v-model
+    条件和循环
+        也很容易切换元素的存在
+        v-if: 显示/隐藏元素
+        v-for: 该指令可用于使用来自数组的数据显示项目列表
+    与组件组成
+        组件系统是 Vue 的另一个重要概念，因为它是一种抽象概念，使我们能够构建由小型、自成体系且经常可重复使用的组件组成的大型应用程序
+        在Vue中，组件本质上是具有预先定义选项的实例
+        在 Vue 中注册组件很简单：我们创建一个组件对象，就像我们使用对象一样，并在父项选项中定义它：App components
+    根成分
+        传递给的选项 createApp 用于配置跟组件,在安装应用程序时，该组将将用作渲染的起点
+        需要将应用程序安装到DOM元素中，例如，如果要将Vue应用程序挂载到中<div id="app"></div>，则应传递#app：
+            const RootComponent = {
+            /* options */
+            }
+            const app = Vue.createApp(RootComponent)
+            const vm = app.mount('#app')
+        与大多数应用程序方法不同，mount它不返回应用程序。而是返回根组件实例
+    组件实例属性
+        data: data通过组件实例公开的中定义的属性
+        const app = Vue.createApp({
+        data() {
+            return { count: 4 }
+        }
+        })
+    生命周期挂钩
+        每个组件实例在创建时都会经历一系列初始化步骤，他需要设置数据观察，编译模板，将实例安装在DOM以及在数据更改时更新DOM
+        在此过程中，他还运行成为生命周期挂钩的函数，使用户有机会在特定阶段添加自己的代码。
+        在实例生命周期的不同阶段还会调用其他挂钩，例如mount，update和unmount。调用所有生命周期挂钩，其this上下文指向调用它的当前活动实例。
+    生命周期图
+
+模板语法:
+    Vue.js使用基于HTML的模板语法，该语法允许您以声明方式将渲染的DOM绑定到基础组件实例的数据。
+    所有Vue.js模板都是有效的HTML，可以通过符合规范的浏览器和HTML解析器进行解析。
+    插值:
+        数据绑定的最基本形式是使用“ Mustache”语法（双花括号）的文本插值：
+        <span>Message: {{ msg }}</span>
+        v-once 执行一次性插值
+    原始html
+        v-html: 将数据解析为html
+        <p>Using v-html directive: <span v-html="rawHtml"></span></p>
+    属性:
+        在html属性内不能使用花括号，而是使用v-bind指令
+        <div v-bind:id="dynamicId"></div>
+    使用javascript表达式
+        {{ number + 1 }}
+        {{ ok ? 'YES' : 'NO' }}
+        {{ message.split('').reverse().join('') }}
+        <div v-bind:id="'list-' + id"></div>
+        限制是只能绑定一个
+    指令:
+        指令是带有v-前缀的特殊属性
+        指令的属性值预计是一个单一的JavaScript表达式
+        指令的工作是在其表达式的值发生更改时以响应方式将副作用施加到DOM。
+        某些指令可以带有一个“参数”，在指令名称后用冒号表示。例如，该v-bind伪指令用于以反应方式更新HTML属性：
+            <a v-bind:href="url"> ... </a>
+        另一个示例是v-on指令，该指令侦听DOM事件：
+            <a v-on:click="doSomething"> ... </a>
+        动态参数
+            也可以在指令参数中使用方括号括起来的JavaScript表达式：
+                <a v-bind:[attributeName]="url"> ... </a>
+                <a v-on:[eventName]="doSomething"> ... </a>
+                如果您的组件实例具有data属性attributeName，其值为"href"，则此绑定将等效于v-bind:href。
+                在此示例中，当eventName的值是时"focus"，v-on:[eventName]将等于v-on:focus
+    修饰符:
+        修饰符是用点表示的特殊后缀，表示应以某种特殊方式绑定指令。例如，.prevent修饰符告诉v-on指令调用event.preventDefault()触发的事件
+        <form v-on:submit.prevent="onSubmit">...</form>
+    v-bind: v-on: 特殊缩写
+        v-bind: 
+            <a v-bind:href="url"> ... </a>
+            <a :href="url"> ... </a>
+            <a :[key]="url"> ... </a>
+        v-on:
+            <a v-on:click="doSomething"> ... </a>
+            <a @click="doSomething"> ... </a>
+            <a @[event]="doSomething"> ... </a>
+    
+数据属性和方法
+    数据属性
+        data组件的选项是一个函数，Vue在创建新的组件实例的过程中调用此函数，它应该返回一个对象，然后Vue将其包装在其反应性系统中并以形式存储在组件实例中$data
+        为了方便起见，该对象的所有顶级属性也直接通过组件实例公开：
+    防抖和节流
+        Vue不包含对去抖动或节流的内置支持，但可以使用Lodash等库来实现
+        <script src="https://unpkg.com/lodash@4.17.20/lodash.min.js"></script>
+
+计算属性
+    对于多层嵌套的数据要访问，模板不再是简单和声明性的。您必须先查看一下，然后才能意识到它会根据进行计算
+    这就是为什么对于包含反应性数据的复杂逻辑，应使用计算属性的原因
+计算缓存与方法
+    通过调用表达式中的方法
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,97 @@
+CSS 美化页面元素 布局
+CSS语法
+  (内联)属性：值；
+  (内部)样式名称 {属性：值；...}
+  (外部) XXXXXX.CSS   link 引入 (<link rel="stylesheet" type="text/css" href="css/main.css">)
+1.样式选择器
+2.背景
+3.颜色 预定义颜色  Hex颜色  rgb
+4.边框 border 圆角
+5.内外填充  margin padding
+6.大小和定位
+7.文本 text-align font
+8.2d 3d 效果 
+9.CSS函数 rgb rgba url() calc
+
+
+js引入外部样式表 <script type="text/javascript" src="js/main.js"></script>  在head标签中添加
+javascript语言 js基于面向对象 函数式语言 解释性语言 代码直接运行浏览器中 脚本语言
+要素
+标识符 变量 数据类型 运算符 表达式 流程控制 数组
+弱类型语言
+元素查找 操作 删除 替换     
+控制元素样式
+验证表单
+
+js中String Math Date对象
+
+验证表单数据
+    1.事件属性onsubmit
+    2.调用验证函数，获取函数返回值
+    3.获取表单控件 inpute select textarea
+    4.获取表单元素(对象)
+    5.获取控制中数据的值 inpute元素.value
+
+post get方法：
+form表单元素 action 表单提交的目标
+  1.页面 index.html 
+  2.服务器上的服务
+  3.互联网资源 https：//wwww.baidu.com
+methon属性 两个取值 post get
+  1.(没有安全需求)使用get方式提交数据 url？key=value 通过url请求传送数据key=value
+  2.post方式提交
+    表单中请求参数 隐藏在请求体中，发送给目标
+    敏感信息使用post方式提交
+练习
+    表单 name 不null sex age 1-150
+    邮箱 @格式  身份证号 18位 
+    prefessional
+    班级 (数量限制)
+    验证通过 进行index.html
+练习
+    实现多个checkbox选中案例
+    问题1.获取多个元素
+    BOM browser object model
+
+web基本概念：
+    软件架构：C/S (Client Server) PC端 QQ 安装客户端安装包
+             B/S (Browser Server) 淘宝 京东  直接使用浏览器使用应用
+url地址：http://IP:端口号/工程名称/目录/资源(png js jsp html)
+        http://127.0.0.1：8080/工程名称/    (如果是index则可不写，默认为index)
+netstat -ano  查看端口号
+
+表单发送请求数据
+    表单控件必须name属性，处理表单时浏览器处理请求参数发送
+    get方法请求参数格式 key=value  key2=value 链接在url之后 
+    post方法请求参数格式 key=value  key2=value 参数放在请求体中
+服务器获取请求参数
+    首先，服务器有表单请求的服务，action="login"
+    Servlet 特殊Java类，处理http的请求
+Servlet步骤
+    1.自定义类继承HttpServLet
+    2.重写父类的doGet方法 doPost方法
+    3.添加annotation 对外部提供命名服务
+练习：获取请求参数
+      参数验证通过 跳转到主业
+
+web资源定位
+    1.请求jsp页面 超链接 脚本 action 默认当前目录下找资源
+    2.请求servLet服务的方法
+        使用绝对路径
+        使用base标记 base 作为href的前缀
+        使用EL表达式 表达式获取路径：
+<base http://${pageContext.request.contextPath}:${pageContext.request.contextPath}${pageContext.request.contextPath}>
+    1.登陆失败，转入对应页面，给出错误提示
+    2.servLte jsp之间如何共享数据
+    3.jsp如何获取共享数据
+    4.验证用户信息，从数据库获取
+
+重构登陆案例流程：
+
+
+
+
+
+
+
+

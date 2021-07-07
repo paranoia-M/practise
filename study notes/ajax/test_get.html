@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <input type="button" value="测试get" id="ajax_get">
+</body>
+<script src="./ajax_tool.js"></script>
+<script>
+    document.querySelector('#ajax_get').onclick = function(){
+        // 直接使用 封装的工具
+        /* 
+        参数1:url
+        参数2:数据
+        参数3:请求方法
+        参数4:数据获取成功调用的方法
+         */
+        let backData = ajax_tool('test_get.php','name=smyhvae&skill=code','get',function(data){
+            console.log(data);
+        });
+        console.log(backData);
+    }
+</script>
+</html>

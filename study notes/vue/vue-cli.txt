@@ -1,0 +1,151 @@
+安装
+    全局安装cli: npm install -g @vue/cli 或 yarn global add @vue/cli
+    升级包: npm update -g @vue/cli 或 yarn global upgrade --latest @vue/cli
+安装yarn
+    npm install -g yarn
+创建项目:
+    1.打开要创建文件的根目录
+    2.vue create your-name  vue -cli3  // vue init webpack your-name  vue-cli2
+    3.选择配置
+    4.cd your-name
+    5.npm run serve
+项目目录
+    main.js 入口文件 
+        导入全局样式和组件 
+        import './assets/css/common.css'
+        import ElementUI from 'element-ui';
+        import 'element-ui/lib/theme-chalk/index.css';
+        Vue.use(ElementUI)
+    app.vue;  import Header from './components'
+    assets 资源目录 图片 字体 样式 
+    components 放置组件 xxx.vue文件
+    views 放置页面  
+    build 打包文件 npm run build 会生成打包文件
+    router 路由文件
+    mixin vue混入通用方法 async await 相关
+    config 配置接口相关 使请求地址不用加根地址
+安装模板
+    npm i element-ui -s
+安装sass
+    cnpm i sass sass-loader@10 -D
+安装echarts
+    cnpm install echarts --save
+安装axios
+    cnpm install axios --save-dev
+安装fastClick
+    处理移动端click事件 300 毫秒延迟
+    cnpm install fastclick --save
+安装 stylus
+    直接在package.json 里面添加 然后npm install
+    "stylus": "^0.54.8",
+    "stylus-loader": "^3.0.2",
+安装swiper 轮播图
+    cnpm install vue-awesome-swiper swiper@5.4.5 --save 
+    import Vue from 'vue'
+    import VueAwesomeSwiper from 'vue-awesome-swiper'
+    // import style (>= Swiper 6.x)
+    import 'swiper/swiper-bundle.css'
+    // import style (<= Swiper 5.x)
+    import 'swiper/css/swiper.css'
+    Vue.use(VueAwesomeSwiper, /* { default options with global component } */)
+安装better-scroll 滚动条
+    cnpm install better-scroll -S  # 安装带有所有插件的 BetterScroll
+    cnpm install @better-scroll/core # 核心滚动，大部分情况可能只需要一个简单的滚动
+        import BetterScroll from 'better-scroll'
+        let bs = new BetterScroll('.wrapper', {
+        movable: true,
+        zoom: true
+        })
+
+import BScroll from '@better-scroll/core'
+let bs = new BScroll('.wrapper', {})
+
+在脚手架中使用路由
+    安装vue-router
+    cnpm install vue-router --save
+    1.在main.js里面导入路由插件  import VueRouter from 'vue-router'
+    2.在main.js里面导入页面组件 import Page1 from './views/Page1';
+    3.在main.js里面注册路由 router: new VueRouter({
+                            routes:{
+                                path: '/',
+                                component: Page1,
+                            },
+                            {
+                                path: '/user',
+                                component: 'Page2',
+                            },
+
+                        }).$mount('#app')
+    4.在app.vue里面使用路由链接组件，用于跳转路由  <router-link to="/">首页</router-link>
+    5.使用路由视图组件，用于渲染页面 <router-view></router-view>
+    6.在el-menu组件只有加上router属性，就表示是否使用vue-router模式，启用该模式会在激活导航时以index作为path进行路由解析
+        因为当前el-menu组件开启了路由模式，所有菜单项里面的index属性就可以作为路径的path使用了
+        <el-menu>:router="true" 或者 router</el-menu>
+        index='/'
+        前提是在导航组件中，而且在组件显示的页面必须添加<router-view></router-view>用来显示组件
+    7.单独在页面中添加路由
+        <router-link tag="span" to="/user">用户</router-link>
+        <router-view></router-view>
+    8.$router+$route 的方式跳转路由 多个路由
+        let router = new VueRouter({
+                routes: [
+                    {
+                    path: '/',
+                    component: Page1,
+                    },
+                    {
+                    path: '/user',
+                    component: Page2,
+                    },
+                ]
+        })
+        new Vue({
+            router: router,
+        }).$mount('#app')
+    8.创建router文件夹 
+        导入vue
+        导入页面组件
+        导入路由插件
+        创建路由对象并将该路由对象导出去
+    9.前面创建的router对象所有人都可以访问 但是如果想让固定的人访问就得添加方法进行判断
+    10.路由懒加载和按组分块路由懒加载
+        路由懒加载.
+            component: ()=>import('../views/Page1.vue')//采用路由懒加载模式，路由分块加载，增快加载速度
+            不用在import一个组件了
+        按组分块路由懒加载
+            component: ()=>import(/* webpackChunkName: "group-a" */  '../views/Page1.vue')
+            增加组名 必须是注释的形式添加分组，之后点击相关的组别加载相应的组件
+
+
+
+    
+
+
+
+
+
+错误
+    1.定义组件后不使用会报错,不注册组件会报错,import之后也会报错
+    修改项目的package.json
+        在package.json中找到eslintConfig下的rules，增加"vue/no-unused-components": "off"即可：或者在vue.config.js里面配置
+    2.2 errors and 0 warnings potentially fixable with the --fix option
+        注释掉 .eslintrc.js中的@vue/standard
+        在package.json中 script里面 更改 "lint": "eslint --fix --ext .js,.vue src",
+    3.启动项目时报错：Failed to resolve loader: sass-loader You may need to install it.
+        cnpm install sass-loader -D
+        cnpm install node-sass -D
+    4.
+
+杂项:
+    1.runtime-compiler  编译器
+    步骤: template -> ast -> render -> vDom -> ui
+    runtime-only  运行时
+    步骤: render -> vDom -> ui
+    比较: runtime-only 性能更高  代码量更少
+    解释: ast 抽象语法树 (Abstract Syntax Tree)
+    2.用keep-alive包裹router-view可以保持组件活跃 同时可以使用active deactive函数来监测详情 
+    3.路由导航守卫
+        beforeEach afterEach beforeRouterLeave
+
+
+

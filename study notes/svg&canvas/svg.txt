@@ -1,0 +1,82 @@
+图形系统
+        计算机中描述图形信息的两大系统是格栅系统和矢量图形
+    格栅图形
+        在栅格图形系统中，图像被表示为图片元素或者像素的长方形数组.每个像素用其 RGB 颜色值或者颜色表内的索引表示。
+        这一系列也称为 位图.通过以某种压缩格式存储。由于大多数现代显示设备也是栅格设备，显示图像时仅需要一个阅读器将位图解压并将它传输到屏幕上
+        位图: BMP JPG PNG 等
+    矢量图形
+        矢量图是基于数学的描述，是计算机图形学中用点、直线或者多边形等基于数学方程的几何图元表示的图像。 矢量图形与使用像素表示图像的位图不同。
+    
+        <svg></svg> 根元素:以像素为单位定义了整个图像的width height 
+                    通过xmlns属性定义了svg命名空间
+        <title></title> 元素的内容可以被阅读器显示在标题栏上或者是作为鼠标指针指向图像时的提示，
+        <desc> 元素允许咱们为图像定义完整的描述信息。
+    基本形状和属性
+        基本图形
+            <rect></rect> 矩形
+            <circle></circle> 圆形
+            <ellipse></ellipse> 椭圆形
+            <line></line> 线
+            <polyline></polyline> 多线
+            <polygon></polygon> 多边形
+
+        基本属性
+            fill
+            stroke （游泳或划船的）划；中风；（打、击等的）一下； 轮廓
+            stroke-width 笔画宽度
+            transform 改变 转换
+
+            cx:元素中心距离最左边的距离 cy: 元素中心距离最右边的距离 r: 半径
+            但是 SVG 也允许咱们使用单独的属性，而不用全部写在 style 内，
+    在网页中使用SVG
+        SVG 是一种图件格式，因此可以使用与其他图像类型相同的方式包含在 HTML 页面中。
+        将图像包含在 <img> 元素内: 当图像是页面的基本组成部分时，推荐这种方式
+        将图像作为另一个元素的 CSS 样式属性插入: 当图像主要用来装饰时
+    在 <img> 元素内包含 SVG 图像非常简单，只需设置 src 指向 SVG 文件位置即可
+        <img src='cat.svg' alt=''/>
+    在 CSS 中包含 SVG
+        可以使用 background-image 属性来显示 SVG，如果没有固有尺寸， SVG 会被缩放为元素高度和宽度的 100%，
+        div.background-cat {
+        background-image: url('cat.svg');
+        background-size: 100% 100%;
+    在网页中直接使用 SVG 标签
+        <svg width='140' height='170' xmlns='http://wwww.w3.org/2000/svg'>
+        <title>Cat</title>
+        <desc>Stick Figure of Cat</desc>
+        <!-- 在这里绘制图像 -->
+        <circle cx='70' cy='95' r='50' style='stroke:black; fill:none'></circle>
+        </svg>
+    SVG 的视窗，视野和全局（世界）
+        视窗:
+            SVG的属性width height 来控制视窗的大小,也称为SVG容器
+        全局
+            SVG里面的代码，就是对SVG全局的定义
+        视野
+            世界是无穷大的，视野是观察世界的一个矩形区域 viewbox
+        世界不可变，而视野是可以改变的。在SVG中，提供了viewBox和preserveAspectRatio属性来控制视野。
+    线段
+        SVG 可以使用 元素画出一条直线，使用只需要指定线段的起(x1, y1)止(x2, y2)点。
+        x1 x2 y1 y2
+        <svg width='140' height='170' xmlns='http://wwww.w3.org/2000/svg'>
+        <line x1='0' y1='0' x2='100' y2='100' style='stroke:black'/>
+        </svg>
+    笔画的特性
+        线段可以看作画面上画出来的笔画。笔画的尺寸、颜色和风格都会影响线段的表现。这些特性都可以在 style 属性指定。
+        stroke-width 线段的粗细
+        stroke-opacity 来控制线的透明度
+    笔画的颜色和透明度
+        1.基本颜色关键字： aqua、black、blue、fuchsia、gray、green
+        2.由 6 位十六进制指定的颜色，形式为 #rrggbb，其中 rr 表示红色, gg 表示绿色, bb 表示蓝色，它们的范围都是 00--ff
+        3.由 3 位十六进制指定的颜色，形式为 #rgb，其中 r 表示红色，g 表示绿色, b 表示蓝色，它们的范围都是 0-f 。
+        4.通过 rgb() 形式指定的 rgb 颜色值，每个值的取值范围都是整数 0-255 或者百分比 0 - 100%
+        5.currentColor 关键字，表示当前元素应用的 CSS 属性 color 的值。color 是用来给 HTML 的文本设置颜色的，会被子元素继承，但对 SVG 没有直接效果。
+        stroke-dasharray 属性
+        
+
+
+
+        
+
+
+
+

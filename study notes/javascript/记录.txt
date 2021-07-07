@@ -1,0 +1,184 @@
+取消无序列表的固定样式
+    list-style-type:none;
+让li列表横向排列
+    display: inline-block;
+    white-space: nowrap;
+    方法2：在li列表里用 float
+
+
+
+background:颜色 目标位置(url=()) 图片位置(top) no-repeat
+
+border-radious: 30px; 让矩形变成圆角
+
+font: bold 30px/40px "微软雅黑"；
+
+给表单设置圆角的时候border-radious会与border-collspan发生冲突，得设置四个角分比别为圆角
+
+table tr:first-child th:last-child
+table tr:last-child th:first-child
+
+border-top-right-radius: 10px
+border-top-left-radius: 10px
+border-top-top-radius: 10px
+border-top-bottom-radius: 10px
+
+让div居中
+        background-color: rgb(115, 165, 189);
+        border-radius: 20px;
+        width: 600px;
+        height: 600px;
+        margin: auto;
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+
+盒子阴影
+  box-shadow:-5px 8px 4px 1px #333; 
+
+文字阴影
+  text-shadow:-3px 3px 4px 5px #333;
+
+渐变色
+  background-image:linear-gradient(to top,red,green)
+ 
+盒子居中
+  left: calc(100%/2-Xpx)   X为页面宽度的一半
+
+文本框去边框
+  border：none；
+
+文本框透明
+  opacity：0.3；
+
+带透明度的颜色
+  rgba(324,34,54,0.4)
+
+合并边框线
+  border-collspan：collapan；
+
+高亮显示时的边框
+  outline：none；
+
+<input type="radio" checked="checked"> 单选 默认选择
+<input type="radio"> 复选
+<input type="text" palcegolder="用户名" name="username">
+<input type="password" palcegolder="密码" name="password">
+
+vh vw
+    一种单位，该值将屏幕可见长度和可见宽度分为100份，25vh相当于25%的屏幕长度，30vw相当于30%的屏幕宽度
+
+var：定义的是变量，没有块作用域概念，可以跨块级作用域访问，但是不能跨函数访问，并且可以变量提升
+let：定义的是变量，只能再块作用域里访问，不能跨块访问，也不能跨函数访问。
+const：定义的是常量，初始化需赋值（一旦赋值不能修改）不然报错
+
+前端模板资源：猿来如此 源码网 简书
+
+让li标签里的内容排成一行
+    在li标签里设置 display:inline-block;
+
+font-family: 'Helvetica Neue', 'Helvetica', 'Microsoft Yahei', sans-serif;
+    宋体： "SimSun"
+
+字号 行高 字体
+    font:12px/200%  "Times New Roman","Microsoft YaHei","SimSun";
+
+顺序：font-style | font-variant | font-weight | font-size | line-height | font-family
+font: 加粗 字号/行高/ 字体
+font: 400 14px/24px "宋体";
+
+取消列表前的小圆点
+    list-style: none;
+
+取消下划线
+    text-decoration: none;
+
+行高 字号一般都是偶数
+
+vertical-align: middle; /*指定行级元素的垂直对齐方式。*/
+
+字体一般用逗号分隔，备用
+    font-family: "Times New Roman","微软雅黑","宋体";
+
+设置列表的标记类型 列表项标记被放的位置 将图像设置为列表项标记
+    list-style：list-style-type，list-style-position，list-style-image
+
+让flex盒子中的子元素们居中
+    display:flex;
+    justify-content:center;    子元素在横轴的对齐方式 （左右居中）
+    aline-items:center;    子元素在竖轴的对齐方式（上下居中）
+
+让文字只显示一行，超出显示省略号
+    	overflow: hidden;
+      white-space: nowrap;
+	    text-overflow: ellipsis;
+
+solid 实线  dashed 虚线  dotted 点线
+
+用div创建一个小三角：
+            border-color: black transparent transparent  transparent;
+            border-style: solid solid ;
+            border-width: 10px 10px ;
+
+使用 col-{breakpoint}-auto 断点方法，可以实现根据其内容的自然宽度来对列进行大小调整。
+
+斑马线效果：
+    
+		width: 520px;
+		height: 80px;
+		margin: 20px auto;
+		background: linear-gradient(to right, #000 50%, #fff 50%);
+		background-size: 30px 100%;
+
+flex-direction:
+  row：项目放置与文本方向相同。
+  row-reverse：项目放置在文本方向的对面。
+  column：项目从上到下放置。
+  column-reverse：项目从下到上放置。
+
+justify-content:  沿主轴对齐 左右
+
+align-item:  沿着交叉轴对齐 上下
+
+align-self:  沿着横轴对其
+
+align-content:
+  flex-start：生产线包装在容器顶部。
+  flex-end：生产线包装在容器底部。
+  center：生产线包装在容器的垂直中心。
+  space-between：线条显示，它们之间的间距相等。
+  space-around：线条显示，周围间距相等。
+  stretch：线路被拉伸，以适应容器。
+
+flex-wrap：
+  nowrap：每个项目都适合单行。
+  wrap：项目环绕到其他行。
+  wrap-reverse：项目绕到反向附加行。
+
+flex-direction  定义主轴方向
+  colum  row  column-reverse  row-reverse
+
+flex-flow:row wrap  两个属性和一起使用
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
