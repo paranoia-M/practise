@@ -58,10 +58,6 @@
         })
     import BScroll from '@better-scroll/core'
     let bs = new BScroll('.wrapper', {})
-安装epic-spinners 加载动画
-    npm install --save epic-spinners
-安装 css-file-icons css文件图标样式 
-    npm i css-file-icons --save
 
 在脚手架中使用路由
     安装vue-router
