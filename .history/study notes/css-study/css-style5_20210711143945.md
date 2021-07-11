@@ -1,0 +1,258 @@
+<!--
+ * @Author: your name
+ * @Date: 2021-07-11 09:54:45
+ * @LastEditTime: 2021-07-11 14:39:45
+ * @LastEditors: Please set LastEditors
+ * @Description: In User Settings Edit
+ * @FilePath: \notes\study notes\css-study\css-style5.md
+-->
+
+## 第五章 字体排印
+
+-   **连字符断行**
+-   css3 特性 `hyphens: none/manual/auto` auto 会自动添加连字符
+-   **插入换行**
+-   有一个 Unicode 字符是专门代表换行符的：0x000A ①。在 CSS 中，这个字符可以写作 "\000A"，或简化为 "\A"。
+
+```
+    dt, dd { display: inline; }
+    dd {
+    margin: 0;
+    font-weight: bold;
+    }
+    dd + dt::before {
+    content: '\A';
+    white-space: pre;
+    }
+    dd + dd::before {
+    content: ', ';
+    margin-left: -.25em;
+    font-weight: normal;
+    }
+```
+
+-   **文本行的斑马条纹**
+-   `tr:nth-child(even) {background: rgba(0,0,0,.2);}`
+-   使用渐变色的条纹背景也可以达到要求效果，要注意 line-height 与 background-size 的关系，
+
+```
+    padding: .5em;
+    line-height: 1.5;
+    background: beige;
+    background-image: linear-gradient(
+    rgba(0,0,0,.2) 50%, transparent 0);
+    background-origin: content-box;
+    background-size: auto 3em;
+```
+
+-   **调整 tab 的宽度**
+-   通常我们使用`<pre> <code>`来显示代码内容，其属性`tab-size: 2` 代表使用 tab 来缩进几个字符
+-   **连字**
+-   font-variant-ligatures 专门用来控制连字效果的开启和关闭。如果要启用所有可能的连字，需要同时指定这三个标识符：
+-   `font-variant-ligatures: common-ligatures discretionary-ligatures historical-ligatures;`
+-   属性可以只使用一种 也可以关闭，只需要在属性前面加上 no- 。 恢复成原始属性试图用 normal 而不是 none
+-   **华丽的&符号**
+
+```
+      @font-face {
+      font-family: Ampersand;
+      src: local('Baskerville-Italic'),
+      local('GoudyOldStyleT-Italic'),
+      local('Palatino-Italic'),
+      local('BookAntiqua-Italic');
+      unicode-range: U+26;
+      }
+      h1 {
+      font-family: Ampersand, Helvetica, sans-serif;
+      }
+```
+
+-   **自定义下划线**
+-   `text-decoration: underline;`
+
+```
+   background: linear-gradient(gray, gray) no-repeat;
+   background-size: 100% 1px;
+   background-position: 0 1.15em;
+   text-shadow: .05em 0 white, -.05em 0 white;
+   // 虚线
+   background: linear-gradient(90deg,
+    gray 66%, transparent 0) repeat-x;
+    background-size: .2em 2px;
+    background-position: 0 1em;
+
+```
+
+-   **现实中的文字效果**
+-   **凸版印刷效果**
+-   使用浅颜色背景和深颜色字体在加上字体阴影会形成特效。
+
+```
+    // 深色背景浅色文字
+    background: hsl(210, 13%, 60%);
+    color: hsl(210, 13%, 30%);
+    text-shadow: 0 .03em .03em hsla(0,0%,100%,.8);
+    // 浅色背景深色文字
+    background: hsl(210, 13%, 40%);
+    color: hsl(210, 13%, 75%);
+    text-shadow: 0 -1px 1px black;
+```
+
+-   处理文字字号跨度大的效果推荐使用 em 单位
+-   如果把文字颜色对调，也就是深色背景与浅色字体在使用上面的效果会让文字变模糊，处理方法是给文字顶部加上深色投影
+-   **空心字效果**
+-   加上不同方向的少量偏移
+-   **svg 方法**
+
+```
+    <h1><svg width="2em" height="1.2em">
+    <use xlink:href="#css" />
+    <text id="css" y="1em">CSS</text>
+    </svg></h1>
+
+    h1 {
+    font: 500%/1 Rockwell, serif;
+    background: deeppink;
+    color: white;
+    }
+    h1 text {
+    fill: currentColor;
+    }
+    h1 svg { overflow: visible }
+    h1 use {
+    stroke: black;
+    stroke-width: 6;
+    stroke-linejoin: round;
+    }
+```
+
+-   **文字外发光效果**
+
+```
+    background: #203;
+    color: #ffc;
+    text-shadow: 0 0 .1em, 0 0 .3em;
+    // 为鼠标悬停添加这个效果
+    a {
+    background: #203;
+    color: white;
+    transition: 1s;
+    }
+    a:hover {
+    // 使用 css 滤镜一行就可以 filter: blur(.1em);
+    color: transparent;
+    text-shadow: 0 0 .1em white, 0 0 .3em white;
+    }
+```
+
+-   **文字突起效果**
+-   主要思路就是使用一长串累加的投影，不设模糊并以 1px 的跨度逐渐错开，使颜色逐渐变暗，然后在底部加一层强烈模糊的暗投影，从而模拟完整的立体效果。
+
+```
+      background: #58a;
+      color: white;
+      text-shadow: 0 1px hsl(0,0%,85%),
+      0 2px hsl(0,0%,80%),
+      0 3px hsl(0,0%,75%),
+      0 4px hsl(0,0%,70%),
+      0 5px hsl(0,0%,65%);
+      0 5px 10px black;// 在底部加一层投影
+      // scss
+      @mixin text-3d($color: white, $depth: 5) {
+      $shadows: ();
+      $shadow-color: $color;
+      @for $i from 1 through $depth {
+      $shadow-color: darken($shadow-color, 10%);
+      $shadows: append($shadows,
+      0 ($i * 1px) $shadow-color, comma);
+      }
+      color: $color;
+      text-shadow: append($shadows,
+      0 ($depth * 1px) 10px black, comma);
+      }
+      h1 { @include text-3d(#eee, 4); }
+```
+
+-   把投影全部变成黑色，并且去掉底层的阴影可以模拟出一种在复古标志牌中常见的文字效果
+
+```
+      color: white;
+      background: hsl(0,50%,45%);
+      text-shadow: 1px 1px black, 2px 2px black,
+      3px 3px black, 4px 4px black,
+      5px 5px black, 6px 6px black,
+      7px 7px black, 8px 8px black;
+      // scss
+      @function text-retro($color: black, $depth: 8) {
+      $shadows: (1px 1px $color,);
+      @for $i from 2 through $depth {
+      $shadows: append($shadows,
+      ($i*1px) ($i*1px) $color, comma);
+       }
+      @return $shadows;
+      }
+      h1 {
+      color: white;
+      background: hsl(0,50%,45%);
+      text-shadow: text-retro();
+      }
+```
+
+-   **环形文字**
+
+```
+.circular path { fill: none; }
+.circular {
+ width: 30em;
+ height: 30em;
+ margin: 3em auto 0;
+}
+.circular svg {
+ display: block;
+ overflow: visible;
+}
+
+<div class="circular">
+ <svg viewBox="0 0 100 100">
+ <path d="M 0,50 a 50,50 0 1,1 0,1 z"
+ id="circle" />
+ <text><textPath xlink:href="#circle">
+ circular reasoning works because
+ </textPath></text>
+ </svg>
+</div>
+```
+
+```
+<div class="circular">
+ circular reasoning works because
+</div>
+$$('.circular').forEach(function(el) {
+ var NS = "http://www.w3.org/2000/svg";
+ var xlinkNS = "http://www.w3.org/1999/xlink";
+ var svg = document.createElementNS(NS, "svg");
+ var circle = document.createElementNS(NS, "path");
+ var text = document.createElementNS(NS, "text");
+ var textPath = document.createElementNS(NS, "textPath");
+ svg.setAttribute("viewBox", "0 0 100 100");
+ circle.setAttribute("d", "M0,50 a50,50 0 1,1 0,1z");
+ circle.setAttribute("id", "circle");
+ textPath.textContent = el.textContent;
+ textPath.setAttributeNS(xlinkNS, "xlink:href", "#circle");
+ text.appendChild(textPath);
+ svg.appendChild(circle);
+ svg.appendChild(text);
+ el.textContent = '';
+ el.appendChild(svg);
+});
+```
+
+-
+-
+-
+-
+-
+
+```
+
+```
