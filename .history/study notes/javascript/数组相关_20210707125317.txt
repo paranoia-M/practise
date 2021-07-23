@@ -25,11 +25,8 @@
     var removedItems = vegetables.splice(pos, n);
 复制一个数组
     var shallCopy = fruits.slice();
-sessionStorage和localStorage 的区别
-  sessionStorage: 临时存储，使用的是key value 结构。
-    1.value只能是字符串,无法存储对象，所以在存储之前要将对象转化为字符串 let obj = JSON.stringify(obj) 
-    2.向里面存储对象需要转化为字符串 sessionStorage('string', objString) 存储到sessionStorage里面
-    3.如果从sessionStorage里面未获取到值则返回null 不管他是否存在
+    
+
 
 
 

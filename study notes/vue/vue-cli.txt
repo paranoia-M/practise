@@ -30,6 +30,11 @@
     cnpm i sass sass-loader@10 -D
 安装echarts
     cnpm install echarts --save
+    引入方式: import * as echarts from 'echarts'; v5版本及以上
+    v4版本    import echarts from 'echarts';
+    在vue2下使用:
+    npm install echarts vue-echarts
+    npm i -D @vue/composition-api
 安装axios
     cnpm install axios --save-dev
 安装fastClick
