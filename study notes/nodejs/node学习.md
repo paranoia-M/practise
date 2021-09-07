@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-10 06:15:54
- * @LastEditTime: 2021-07-10 10:00:45
+ * @LastEditTime: 2021-07-28 09:25:27
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \notes\study notes\nodejs\node学习.md
@@ -99,6 +99,106 @@
 
 -   根据客户端请求的 URL 映射到不同的方法实现，更多的一般都是针对 URL 中的路径，或者是参数，又或者是锚点这些信息进行映射。
 
+#### 内置模块
+
+-   **_本地路径处理 path_**
+-   `var path = require('path'); var filepath = '/tmp/demo/js/test.js';`
+-   获取所在路径: path.dirname(filepath)
+-   获取文件名:path.basename(filepath)
+-   获取扩展名:path.extname(filepath)
+-   **路径组合**
+-   path.join([...paths])
+-   path.resolve([...paths])
+-   **路径解析**
+-   path.normalize(filepath)
+    1. 如果路径为空，返回.，相当于当前的工作路径。
+    2. 将对路径中重复的路径分隔符（比如 linux 下的/)合并为一个。
+    3. 对路径中的.、..进行处理。（类似于 shell 里的 cd ..）
+    4. 如果路径最后有/，那么保留该/。
+-   **文件路径分解和组合**
+
+```
+var p2 = path.format({
+  dir: '/tmp',
+  name: 'hello',
+  ext: '.js'
+});
+```
+
+-   path.parse(filepath) path.format(filepath)的反向操作,拆分路径
+-   **获取相对路径**
+-   path.relative(from,to)
+-   如果 from、to 指向同个路径，那么，返回空字符串。如果 from、to 中任一者为空，那么，返回当前工作路径。
+-   **_文件系统操作_**
+-   **文件读取,普通读取**
+-   同步读取: fs.readFile('读取路径名','utf8',回调函数(处理错误和数据))
+-   异步读取: fs.readFileSync 在同步的基础上改成 try catch
+-   通过文件流读取: 适合读取大文件
+
+```
+var readStream = fs.createReadStream('./fileForRead.txt', 'utf8');
+
+readStream
+    .on('data', function(chunk) {
+        console.log('读取数据: ' + chunk);
+    })
+    .on('error', function(err){
+        console.log('出错: ' + err.message);
+    })
+    .on('end', function(){  // 没有数据了
+        console.log('没有数据了');
+    })
+    .on('close', function(){  // 已经关闭，不会再有事件抛出
+        console.log('已经关闭');
+    });
+```
+
+-   **文件写入**
+-   fs.writeFile(); fs.writeFileSync()
+-   通过文件流写入 fs.createWriteStream`
+-   文件是否存在:fs.access()
+-   **创建目录**
+-   fs.mkdir(); fs.mkdirSync()
+-   **删除文件**
+-   fs.unlink(); fs.unlinkSync()
+-   **遍历目录**
+-   **文件重命名**
+-   fs.rename(); fs.renameSync()
+-   **监听文件修改**
+-   fs.watch(); fs.watchFile()
+-
+-
+-
+-
+-
+-
+-
+-
+-
+-
+-
+-
+-
+-
+-
+-
+-
+-
+-
+-
+-
+-
+-
+-
+-
+-
+-
+-
+-
+-
+-
+-
+-
 -
 -
 -

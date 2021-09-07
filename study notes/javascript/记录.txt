@@ -162,7 +162,12 @@ flex-direction  定义主轴方向
 
 flex-flow:row wrap  两个属性和一起使用
 
-
+事件循环
+  调用栈(执行栈:采用后进先出): 函数被调用的时候会被压入调用栈,return的时候会被弹出.
+  消息队列: 任务进入执行栈中判断是同步还是异步,同步直接按照顺序执行,异步会先把回调函数放入任务队列中直到调用栈清空后才执行,
+  微任务: Promise回调, MutationObserver
+  异步任务: 宏任务, 微任务; 同步任务执行完成后会立即执行微任务,之后在执行宏任务
+  宏任务: 整体代码script, I/O, setTimeout/setInterval, requestAnimationFrame
 
 
 
