@@ -30,9 +30,9 @@
         }
         return this.instance;
       };
-      let a = Singleton.getInstance("a");
-      let b = Singleton.getInstance("b");
-      let c = Singleton.getInstance();
+      let a = Singleton.instance("a");
+      let b = Singleton.instance("b");
+      let c = Singleton.instance();
       console.log(a);
       console.log(b);
       console.log(c);

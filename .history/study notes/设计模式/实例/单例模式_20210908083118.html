@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-09-08 08:17:23
- * @LastEditTime: 2021-09-08 08:34:40
+ * @LastEditTime: 2021-09-08 08:31:18
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \notes\study notes\设计模式\实例\单例模式.html
@@ -19,23 +19,23 @@
       // 单例模式
       let Singleton = function (name) {
         this.name = name;
-        this.instance = null;
       };
       Singleton.prototype.getName = function () {
         console.log(this.name);
       };
-      Singleton.getInstance = function (name) {
-        if (!this.instance) {
-          this.instance = new Singleton(name);
-        }
-        return this.instance;
+      Singleton.instance = function () {
+        let instance = null;
+        return function (name) {
+          if (!instance) {
+            instance = new Singleton(name);
+          }
+          return instance;
+        };
       };
-      let a = Singleton.getInstance("a");
-      let b = Singleton.getInstance("b");
-      let c = Singleton.getInstance();
+      let a = Singleton.instance("a");
+      let b = Singleton.instance("b");
       console.log(a);
       console.log(b);
-      console.log(c);
       console.log(a === b);
     </script>
   </body>
