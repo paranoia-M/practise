@@ -1,0 +1,132 @@
+<!--
+ * @Author: your name
+ * @Date: 2021-09-07 20:08:34
+ * @LastEditTime: 2021-09-07 21:34:31
+ * @LastEditors: Please set LastEditors
+ * @Description: In User Settings 
+ * @FilePath: \notes\study notes\设计模式\实例\工厂模式.html
+-->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <!-- <script>
+      // 接口
+      let Bicycle = new Interface("Bicycle", [
+        "assemble",
+        "wash",
+        "ride",
+        "repair",
+      ]);
+      let Speedster = function () {};
+      Speedster.prototype = {
+        assemble: function () {
+          console.log("assemble");
+        },
+        wash: function () {
+          console.log("wash");
+        },
+        ride: function () {
+          console.log("ride");
+        },
+        repair: function () {
+          console.log("repair");
+        },
+      };
+      //
+      let BicycleShop = function () {};
+      BicycleShop.prototype = {
+        sellBicycle: function (model) {
+          let bicycle;
+          switch (model) {
+            case "aaa":
+              bicycle = new Speedster();
+              break;
+            case "bbb":
+              bicycle = new Lowrider();
+              break;
+            case "ccc":
+            default:
+              bicycle = new ComfortCruiser();
+          }
+          Interface.ensureImplements(bicycle, Bicycle);
+          bicycle.assemble();
+          bicycle.wash();
+          return bicycle;
+        },
+      };
+      let californiaCruisers = new BicycleShop();
+      let yourNewCar = BicycleShop.sellBicycle("aaa");
+    </script> -->
+
+    <script>
+      // 简单工厂模式
+      /* function Factory(career) {
+        function User(career, work) {
+          this.career = career;
+          this.work = work;
+        }
+        let work;
+        switch (career) {
+          case "a":
+            work = ["aaaaa"];
+            return new User(career, work);
+            break;
+          case "b":
+            work = ["bbbbb"];
+            return new User(career, work);
+            break;
+          case "c":
+            work = ["ccccc"];
+            return new User(career, work);
+            break;
+          default:
+            work = ["ddddd"];
+            return new User(career, work);
+        }
+      }
+      let coder = new Factory("a");
+      console.log(coder);
+      let boss = new Factory("b");
+      console.log(boss); */
+
+      // 工厂方法模式
+
+      function Factory(career) {
+        if (this instanceof Factory) {
+          let that = new this();
+          return that;
+        } else {
+          new Factory(career);
+        }
+      }
+      Factory.prototype = {
+        a: function () {
+          this.careerName = "zs";
+          this.work = ["zss"];
+        },
+        b: function () {
+          this.careerName = "ts";
+          this.work = ["tss"];
+        },
+        c: function () {
+          this.careerName = "cs";
+          this.work = ["css"];
+        },
+        d: function () {
+          this.careerName = "js";
+          this.work = ["jss"];
+        },
+      };
+      const coder = new Factory("a");
+      console.log(coder);
+      // const boss = new Factory("l");
+      // console.log(boss);
+    </script>
+  </body>
+</html>

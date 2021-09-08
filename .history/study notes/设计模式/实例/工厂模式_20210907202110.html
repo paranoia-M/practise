@@ -1,0 +1,45 @@
+<!--
+ * @Author: your name
+ * @Date: 2021-09-07 20:08:34
+ * @LastEditTime: 2021-09-07 20:21:10
+ * @LastEditors: Please set LastEditors
+ * @Description: In User Settings 
+ * @FilePath: \notes\study notes\设计模式\实例\工厂模式.html
+-->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      // 接口
+      let Bicycle = new Interface("Bicycle", ["ass"]);
+      //
+      let BicycleShop = function () {};
+      BicycleShop.prototype = {
+        sellBicycle: function (model) {
+          let bicycle;
+          switch (model) {
+            case "aaa":
+              bicycle = new Speedster();
+              break;
+            case "bbb":
+              bicycle = new Lowrider();
+              break;
+            case "ccc":
+            default:
+              bicycle = new ComfortCruiser();
+          }
+          Interface.ensureImplements(bicycle, Bicycle);
+          bicycle.assemble();
+          bicycle.wash();
+          return bicycle;
+        },
+      };
+    </script>
+  </body>
+</html>
