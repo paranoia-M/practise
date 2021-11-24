@@ -1,0 +1,26 @@
+#
+
+- <!DOCTYPE html>替换了XHTML文档类型
+- 图形的文字，一般情况是 img+p 标签，h5 是 img+figcaption(图内的标题)，更加语义化
+- small 标签 指代页面的小字
+- 脚本(scripts)和链接(links)无需在指定 type 了
+- 对于属性或 id 等可以使用引号
+- 内容可以编辑: <ul contenteditable = "true"> </ul>
+- email 输入: 在 input 框里面 type 设置为 email 就可以使用内置表单验证
+- 占位符 placeholder: 在失去焦点后自动填充
+- 本地存储 LocalStorage
+- 语义的 header 和 footer
+- h5 表单特征
+- 必要属性 required
+- 自动获取焦点属性 Autofocus
+- <audio></audio>
+- <video></video>
+- <video preload> 视频预加载
+- <video preload controls> 显示控制条
+- 正则表达式 pattern="[A-Za-z]{4,10}"
+- 属性支持检测
+- mark 元素(Mark Element ) 高亮显示
+- data- 属性 可以通过 dataset 获取
+- Output 元素 计算位置或者坐标
+- <input type="range"> 使用区域 input 创建滑块
+-

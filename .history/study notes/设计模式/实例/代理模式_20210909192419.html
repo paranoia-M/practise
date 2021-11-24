@@ -1,0 +1,144 @@
+<!--
+ * @Author: your name
+ * @Date: 2021-09-08 09:49:42
+ * @LastEditTime: 2021-09-09 19:23:21
+ * @LastEditors: Please set LastEditors
+ * @Description: In User Settings Edit
+ * @FilePath: \notes\study notes\设计模式\实例\代理模式.html
+-->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      /* let Flower = function () {};
+      let xm = {
+        sendFlower: function (target) {
+          let flower = new Flower();
+          target.receiveFlower(flower);
+        },
+      };
+      let B = {
+        receiveFlower: function (flower) {
+          // 监听 A 的好心情
+          A.listenGoodMood(function () {
+            let flower = new Flower(); // 延迟创建 flower 对象
+            A.receiveFlower(flower);
+          });
+        },
+      };
+      let A = {
+        receiveFlower: function (flower) {
+          console.log("收到花 " + flower);
+        },
+        listenGoodMood: function (fn) {
+          setTimeout(() => {
+            fn();
+          }, 3000);
+        },
+      };
+
+      xm.sendFlower(B); */
+      // 图片预加载
+      /*  let url =
+        "https://cn.bing.com/images/search?q=picture&id=738D7CC5D57D8606B00E2080C3F6519419D47596&FORM=IQFRBA";
+      let myImage = (function () {
+        let imgNode = document.createElement("img");
+        document.body.appendChild(imgNode);
+        return {
+          setSrc: function (src) {
+            imgNode.src = src;
+          },
+        };
+      })();
+      let proxyImage = (function () {
+        let img = new Image();
+        img.onload = function () {
+          myImage.setSrc = this.src;
+        };
+        return {
+          setSrc: function (src) {
+            myImage.setSrc("./img/wallhaven-0jw3pm.png");
+            img.src = src;
+          },
+        };
+      })();
+      proxyImage.setSrc(url); */
+
+      // 缓存代理
+      /*  const getFib = (number) => {
+        if (number <= 2) {
+          return 1;
+        } else {
+          return getFib(number - 1) + getFib(number - 2);
+        }
+      };
+      const getCacheProxy = (fn, cache = new Map()) => {
+        return new Proxy(fn, {
+          apply(target, context, args) {
+            const argsString = args.join(" ");
+            if (cache.has(argsString)) {
+              // 如果有缓存,直接返回缓存数据        console.log(`输出${args}的缓存结果: ${cache.get(argsString)}`);
+
+              return cache.get(argsString);
+            }
+            const result = fn(...args);
+            cache.set(argsString, result);
+
+            return result;
+          },
+        });
+      };
+      const getFibProxy = getCacheProxy(getFib);
+      console.log(getFibProxy(10)); */
+
+      // 验证代理
+      const userForm = {
+        account: "",
+        password: "",
+      };
+      const validators = {
+        account(value) {
+          // account 只允许为中文
+          const re = /^[\u4e00-\u9fa5]+$/;
+          return {
+            valid: re.test(value),
+            error: '"account" is only allowed to be Chinese',
+          };
+        },
+        password(value) {
+          return {
+            valid: value.length >= 6,
+            error: '"password "should more than 6 character',
+          };
+        },
+      };
+
+      const getValidateProxy = (target, validators) => {
+        return new Proxy(target, {
+          _validators: validators,
+          set(target, prop, value) {
+            if (value === "") {
+              console.error(`"${prop}" is not allowed to be empty`);
+              return (target[prop] = false);
+            }
+            const validResult = this._validators[prop](value);
+            if (validResult.valid) {
+              return Reflect.set(target, prop, value);
+            } else {
+              console.error(`${validResult.error}`);
+              return (target[prop] = false);
+            }
+          },
+        });
+      };
+      const userFormProxy = getValidateProxy(userForm, validators);
+      userFormProxy.account = "123";
+    </script>
+  </body>
+</html>

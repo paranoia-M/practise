@@ -1,0 +1,78 @@
+<!--
+ * @Author: your name
+ * @Date: 2021-09-08 16:37:06
+ * @LastEditTime: 2021-09-08 16:58:47
+ * @LastEditors: Please set LastEditors
+ * @Description: In User Settings Edit
+ * @FilePath: \notes\study notes\设计模式\实例\proxy.html
+-->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      /* let obj = new Proxy(
+        {},
+        {
+          get: function (target, propKey, receiver) {
+            console.log(`getting ${propKey}`);
+            return Reflect.get(target, propKey, receiver);
+          },
+          set: function (target, propKey, value, receiver) {
+            console.log(`setting ${propKey}!`);
+            return Reflect.set(target, propKey, value, receiver);
+          },
+        }
+      );
+      obj.count = 1;
+      ++obj.count; */
+
+      /* let proxy = new Proxy(
+        {},
+        {
+          get: function (target, propKey, receiver) {
+            return 35;
+          },
+        }
+      );
+      console.log(proxy.time);
+      console.log(proxy.name); */
+
+      //proxy 实例也可以作为其他对象的原型
+      /*  let proxy = new Proxy(
+        {},
+        {
+          get: function (target, propKey, receiver) {
+            return 1;
+          },
+        }
+      );
+      let obj = Object.create(proxy);
+      console.log(obj.time); */
+
+      // 同一个拦截器可以有多个拦截操作
+      let handler = {
+        get: function (target, name) {
+          if (name == "prototype") {
+            return Object.prototype;
+          }
+          return "Hello, " + name;
+        },
+        apply: function (target, thisBinding, args) {
+          return args[0];
+        },
+        constructor: function (target, args) {
+          return { value: a };
+        },
+      };
+      let fProxy = new Proxy(function (x, y) {
+        return x + y;
+      }, handler);
+    </script>
+  </body>
+</html>

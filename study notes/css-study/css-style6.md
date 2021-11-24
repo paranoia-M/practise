@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-11 14:40:21
- * @LastEditTime: 2021-07-17 20:25:59
+ * @LastEditTime: 2021-10-07 22:07:19
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \notes\study notes\css-study\css-style6.md
@@ -9,9 +9,9 @@
 
 ## 第六章 用户体验
 
--   **选择合适的鼠标指针**
--   **扩大可点击区域**
--   **自定义复选框**
+- **选择合适的鼠标指针**
+- **扩大可点击区域**
+- **自定义复选框**
 
 ```
 <input type="checkbox" id="awesome" />
@@ -52,24 +52,24 @@
 			}
 ```
 
--   **通过阴影来弱化背景**
--   **通过模糊来弱化背景**
--   **滚动提示**
--   **交互式的图片对比控件**
--   **范围输入控件**
+- **通过阴影来弱化背景**
+- **通过模糊来弱化背景**
+- **滚动提示**
+- **交互式的图片对比控件**
+- **范围输入控件**
 
 ## 第七章 结构与布局
 
--   **自适应内部元素**
--   `width: min-content;`将解析为这个容器内部最大的不可断行元素的宽度（即最宽的单词、图片或具有固定宽度的盒元素）
--   **精确控制表格列宽**
--   `table-layout` : 自动表格布局算法`table {table-layout: fixed;width: 100%;}`
--   **根据兄弟元素的数量来设计样式**
--   只有一个列表项时 `li:only-child; :first-child:last-child; li:first-child:nth-last-child(1)`
--   `li:first-child:nth-last-child(4) ~ li /* 当列表正好包含四项时，命中所有列表项 */`
--   `:nth-child(n+4)`表示选中除了第一 二 三 个之外的所有元素
--   **满幅的背景,定宽的内容**
--   就不用给 footer 设置多余的容器来包裹这个元素,同样可以达到效果
+- **自适应内部元素**
+- `width: min-content;`将解析为这个容器内部最大的不可断行元素的宽度（即最宽的单词、图片或具有固定宽度的盒元素）
+- **精确控制表格列宽**
+- `table-layout` : 自动表格布局算法`table {table-layout: fixed;width: 100%;}`
+- **根据兄弟元素的数量来设计样式**
+- 只有一个列表项时 `li:only-child; :first-child:last-child; li:first-child:nth-last-child(1)`
+- `li:first-child:nth-last-child(4) ~ li /* 当列表正好包含四项时，命中所有列表项 */`
+- `:nth-child(n+4)`表示选中除了第一 二 三 个之外的所有元素
+- **满幅的背景,定宽的内容**
+- 就不用给 footer 设置多余的容器来包裹这个元素,同样可以达到效果
 
 ```
 footer {
@@ -79,14 +79,24 @@ footer {
 }
 ```
 
--   **垂直居中**
--   h5 新增的语义话标签: `header nav footer section article aside figure figcaption`
--   块级元素:`div p h1-h6 br ul ol ` 11 个
--   行内元素:`a span strong b em i img input select` 9 个
--   不仅建议行内元素其那套块级元素
--   对一个元素实现水平居中: 如果是行内元素则给他的父元素设置 `text-align: center` 如果是一个块级元素 就对自身应用 `margin: auto`
--   **基于绝对定位的解决方案**
--   在要求元素有固定的宽高后
+- **垂直居中**
+- h5 新增的语义话标签: `header nav footer section article aside figure figcaption`
+- 块级元素:`div p h1-h6 br ul ol ` 11 个
+- 行内元素:`a span strong b em i img input select` 9 个
+- 不仅建议行内元素其那套块级元素
+- 对一个元素实现水平居中: 如果是行内元素则给他的父元素设置 `text-align: center` 如果是一个块级元素 就对自身应用 `margin: auto`
+
+1. 绝对定位: 给子元素设置 absolute 然后 top: 50%; margin: -50px 0 0 0;
+2. 绝对定位: 给子元素设置 absolute 然后 top: 50%; transform: translate(0, -50%);
+3. 绝对定位: 给子元素设置 absolute 然后 top: 50%; margin: -15% 0 0 0;
+4. 绝对定位: 给子元素设置 absolute 然后 top: 0; bottom: 0; margin: auto;
+5. padding: 实现子元素垂直居中 给父元素设置相等的上下内边距，子元素自然是垂直居中的
+6. flex 布局: display: flex; align-items: center; justify-content: center;
+7. line-height: 单行文本处置居中
+8. 父元素的 line-height + 子元素的 vertical-align: middle; 可以对图片进行居中
+
+- **基于绝对定位的解决方案**
+- 在要求元素有固定的宽高后
 
 ```
 main {
@@ -105,7 +115,7 @@ main {
 }
 ```
 
--   不需要固定宽高的方法
+- 不需要固定宽高的方法
 
 ```
 main {
@@ -117,7 +127,7 @@ main {
 
 ```
 
--   **基于视口单位的解决方案**
+- **基于视口单位的解决方案**
 -
 
 ```
@@ -130,12 +140,12 @@ main {
 
 ```
 
--   **flexbox 解决方案**
--   给父元素应用 flex 给子元素应用` margin: auto;` 同样可以达到居中的效果
--   也可以让容器内容居中: `justify-content: center; align-items: center;`
--   **紧贴底部的页脚**
--   **固定高度的解决方案**
--   减去页脚实际高度
+- **flexbox 解决方案**
+- 给父元素应用 flex 给子元素应用` margin: auto;` 同样可以达到居中的效果
+- 也可以让容器内容居中: `justify-content: center; align-items: center;`
+- **紧贴底部的页脚**
+- **固定高度的解决方案**
+- 减去页脚实际高度
 
 ```
 main {
@@ -145,8 +155,8 @@ box-sizing: border-box;
 }
 ```
 
--   **flex 解决方案**
--   给 footer 元素的父元素设置 `display: flex; flex-flow: column;`这样 footer 的高度会根据内容决定并且会跟随在 container 之下
+- **flex 解决方案**
+- 给 footer 元素的父元素设置 `display: flex; flex-flow: column;`这样 footer 的高度会根据内容决定并且会跟随在 container 之下
 
 ```
 body {
