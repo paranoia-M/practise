@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-11-09 10:45:20
- * @LastEditTime: 2021-11-24 11:16:02
+ * @LastEditTime: 2021-11-26 15:41:47
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \Front-end development learning\document\notes\study notes\react\react_study.md
@@ -35,20 +35,32 @@
 - state 和 props
   - state 主要用于保存，控制，修改自己可变状态
   - props 主要作用是让使用该组件的父组件可以传入参数来配置该组件
+- setState: 是异步方法，一个生命周期内所有的 setState 方法会合并操作。
 - 组件内部状态:局部状态，可以保存，修改，删除存储在组件内部的属性，
 - 受控组件，由 react 控制的输入表单元素而改变其值的方式，称为受控组件
 - 非受控组件:表单数据由 dom 本身处理，不受 setState()的控制，与传统的 HTML 表单输入相似，input 输入值即显示最新值，可以使用 ref 从 dom 获取表单值
+- 动态子组件:组件内的子组件是通过动态计算得到的
 - 可组合组件
 - 函数式无状态组件(不需要本地状态或者组件生命周期方法时，就使用函数式无状态组件)
 - 给组件声明样式
 - 组件之间的传值
   - 父子组件
-  - 子夫组件
+    - 在父组件里面拿到 state 传给子组件，在子组件里面通过 this.props 来获取父组件的 state
+  - 子父组件
+    - 利用回调函数
+    - 利用自定义事件机制
+    - 在父组件里面定义事件函数，通过参数来获取子组件传过来的 state，在子组件里面定义事件函数，将事件处理函数发送出去
   - 任意两个组件之间
+    - 使用从 context 来进行跨组件之间的通信
+    - const ContextCom = React.createContext(); const { state, setState } = useContext(ContextCom); 然后使用 Provider 包裹 ContextCom 同时将 value 传入。然后再子组件里指定 contextType 为 ContextCom，就可以通过 this.context 获取到 state 里面的值了
     - contextType 只能使用一个 context 问题 const numberContext = React.createContext(); numberContext.Provider 和 numberContext.consumer
     - useContext const numberContext = React.createContext(); 父组件的形式一样，在子组件里面可以使用 useContext
--
--
+- 智能组件:可以看作组件内部交互行为，被选择后通过回调函数返回具体选择的索引
+- 木偶组件:可以看作组件在外部传入具体的索引，像木偶一样被操作
+- 问题: 如果一个组件既受内部 state，也受外部 props 的控制，那么如何让两种来操作这个状态
+- 数据更新过程: 父组件向下传递 props 或组件自身执行 setState 方法时发生的一系列更新动作
+  - 如果父节点的 props 更新的时候，我们想要的是更新在同一条链路上的子节点，但是默认情况下 react 会渲染所有子节点，因为 shouldComponentUpdate 默认返回 true(无状态组件没有生命周期方法，渲染到该类组件的时候都会重新渲染，可以选择引用 Recompose 库的 pure 方法)
+  - 如果组件自身的 state 更新了，那么他会依次执行 shouldComponentUpdate --> componentWillUpdate --> render --> componentDidUpdate
 
 # 生命周期(三个阶段)
 
@@ -94,12 +106,36 @@
 - 错误处理
 - static getDerivedStateFromError()
 - componentDidCatch(error，info)
+  **_组件的生命周期_**
+- 当首次挂载组件时 getDefaultProps --> getInitialState --> componentWillMount --> render -->componentDidMount
+- 卸载组件: componentWillUnMount
+- 重新挂载组件(state change): getInitialState --> componentWillMount --> render -->componentDidMount
+- 再次渲染组件(props change): componentWillReceiveProps --> shouldComponentUpdate --> componentWillUpdate --> render --> componentDidUpdate
+- 当使用类组件的时候 static defaultProps = {} 就是 getDefaultProps
+- constructor 里面的 this.state = {} 就是 getInitialState
+- 阶段一
+  - mountComponent:getDefaultProps 是通过构造函数传进来的，所以最先执行并且只执行一次，此时在 componentWillMount 中调用 setState 方法是不会重新渲染而是进行 state 合并
+- 阶段二
+  - updateComponent
+- 阶段三
+  - unMounting
+    **_setState 机制_**
+- setState 是通过队列机制实现 state 更新的，当执行 setState 时，会将需要更新的 state 合并
+  后放入状态队列，而不会立刻更新 this.state
+-
 
 # 事件处理
 
 - 事件中的 this 一般指实例本身，但是载单独的事件处理函数中 this 值为 null 或 undefined。所以需要手动的将 this 绑定
 - 不能通过返回 false 的方式来阻止默认，必须显式的使用 preventDefault，
 - 如果在事件处理函数中携程这样 onCliCK = {handleClick()} 他会在浏览器打开时立即执行，由于监听表达式是函数执行的返回值而不是函数，所以点击按钮时没有任何发生，如果是一个函数就会在点击按钮时执行
+- 合成事件的事件机制
+  - 事件委托
+  - 自动绑定
+- 表单
+  - input, textarea
+  - 单选按钮 复选按钮
+  - select 组件
 
 # 条件渲染
 
@@ -153,6 +189,7 @@
 # 高阶组件
 
 - 高阶组件就是一个函数,一个参数是组件返回值也是组件的函数，传给他一个组件，他返回一个新的组件
+- 高阶组件就是把 state，事件处理函数，等抽离到一个函数中并在这个函数中返回类式组件，处理逻辑部分与正常的类式组件相同，render 部分渲染的是定义的组件，并且传入 this.props 和 newProps.
 - 作用
   - 抽取重复代码，页面复用
   - 条件渲染，控制组件的渲染逻辑，控制权限
@@ -167,7 +204,9 @@
    - 返回一个无状态组件
    - 返回一 class 类组件
 
+- 堆栈调用: DidMount→HOC DidMount→(HOCs DidMount)→(HOCs will unmount)→HOC will unmount→unmount
 - 操作 props
+  - 可以读取，增加，编辑，移除，从高阶组件传进来的 props
   - 返回无状态组件
   - 返回有状态组件
 - 抽离 state
@@ -181,6 +220,17 @@
 
 2. 反向继承
 
+- 队列调用: DidMount→HOC DidMount→(HOCs DidMount)→will unmount→HOC will unmount→(HOCs will unmount)
+- class 继承的是高阶组件定义的容器组件，也就是说高阶组件返回的组件继承于高阶组件定义的容器组件，因为被动的继承了，所有的操作都会变为反向
+
+- 场景: 权限控制，组件渲染性能追踪，页面复用
+- 引用 dom 元素:
+  - 访问 Dom Api(focus 事件，媒体播放)
+  - 调用命令式 dom 节点动画
+  - 与需要 dom 节点的第三方库集成
+  - ref 属性可以让我们访问元素中的一个节点，
+  - ref 在类组件:
+  - ref 在函数组件:
 - 两者的差异:
   - 原组件能否被包裹
   - 原组件是否被继承
@@ -190,16 +240,7 @@
   - 能否影响原组件某些生命周期等方法
   - 能否取到原组件 static 方法
   - 能否劫持原组件生命周期方法
-  - 能否渲染劫持
-- 场景: 权限控制，组件渲染性能追踪，页面复用
-- 引用 dom 元素:
-  - 访问 Dom Api(focus 事件，媒体播放)
-  - 调用命令式 dom 节点动画
-  - 与需要 dom 节点的第三方库集成
-  - ref 属性可以让我们访问元素中的一个节点，
-  - ref 在类组件:
-  - ref 在函数组件:
--
+  - 能否渲染劫持: 指高阶组件可以控制 WrappedComponent 的渲染过程，并渲染出各种结果，反向代理会被限制
 
 # Redux
 
@@ -262,12 +303,12 @@
 - 通过 subscribe() 来注册监听 (在页面里面知道什么时候返回数据)
 - 通过 subscribe() 返回值来注销监听
 - 异步 Action
+
   - 发起请求的时刻，接收到响应的时刻，这两个时刻都会更改 state，因此需要 dispatch 同步到 action 一般情况下，每个 API 请求都需要 dispatch 至少三种 action：
   - 一种通知 reducer 请求开始的 action。
   - 一种通知 reducer 请求成功的 action。
   - 一种通知 reducer 请求失败的 action。
--
-- **React-redux**
+    **React-redux**
 
 - 分为展示组件和容器组件
 - 展示组件
@@ -280,6 +321,23 @@
   - components/TodoList.js // ul 组件,用于显示 ul 列表
   - components/Link.js //带有 callback 回调功能的链接
   - components/Footer.js // 一个允许用户改变可见 todo 过滤器的组件。
+    **redux-sage**
+- Middleware
+  - createSagaMiddleware(options) 创建一个 redux middleware，将 sagas 连接到 redux store，通过 createStore 第三个参数传入
+  - middleware.run(saga, ...args) 动态的运行 saga,只能用于在 applyMiddleware 之后执行 saga
+-
+-
+-
+-
+-
+-
+-
+-
+-
+-
+-
+-
+-
 -
 
 # react-router
@@ -336,4 +394,20 @@
 -
 -
 
+-
+
+# Flux
+
+- 组成:
+  - dispatcher, 分发事件
+  - store,保存数据，响应事件并更新数据
+  - view, 负责订阅 store 里面的数据，并使用这些数据渲染页面
+-
+-
+-
+-
+-
+-
+-
+-
 -
