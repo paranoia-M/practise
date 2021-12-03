@@ -1,0 +1,35 @@
+<!--
+ * @Author: your name
+ * @Date: 2021-12-01 12:30:08
+ * @LastEditTime: 2021-12-01 14:04:00
+ * @LastEditors: Please set LastEditors
+ * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+ * @FilePath: \Front-end development learning\document\notes\study notes\nodejs\koa\koa-study.md
+-->
+
+# koa
+
+要点:
+Koa 中间件
+Es6 语法
+HTTP 基础
+异步流程控制
+数据库操作
+api 接口开发
+
+- 选择 koa 的原因
+  用 async 函数做异步流控制时代码更容易理解
+  错误处理干净，结合 ctx 里面的能更好的处理异常错误
+  具有优雅的回形针中间件机制
+  性能好，代码量少
+- Koa 脚手架 Koa-generator
+- 中间件: 按照加载顺序写的
+  bodyparser 解析 post 类 http 动词的 body 内容，加上 bodyparser 后就可以处理所有请求了
+  json 更好的支持 JSON
+  logger 开发阶段日志
+  koa-static 提供 http 静态托管服务
+  koa-views 视图渲染，支持模板引擎
+  自定义 logger 中间件，无名称: 记录日志
+- router.prefix()为多个路由定义同样的前缀
+- koa-generator 支持三种模板引擎,Pug,Ejs,Numjucks
+  如果要使用其他的模板引擎，则需要修改三个地方
