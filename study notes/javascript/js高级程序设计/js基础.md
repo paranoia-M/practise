@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-20 11:18:53
- * @LastEditTime: 2021-07-22 18:10:39
+ * @LastEditTime: 2021-12-10 15:34:23
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \Front-end development learning\document\notes\study notes\javascript\js高级程序设计\js基础.md
@@ -77,6 +77,8 @@
 
 - **属性类型**
 - 数据属性和访问属性
+- 数据属性的描述符对象和存取器属性的描述符对象
+- 通过调用 Object.getOwnPropertyDescriptor()可以获得某个对象特定属性的属性描述符
 - 数据属性包含一个数据值的位置,在这个位置可以读取和写入值,有四个描述其行为的特性
 
 1. [[Configurable]] 表示能否通过 delete 删除属性从而重新定义属性,能否修改属性的特性,默认值是 true
