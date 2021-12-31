@@ -24,6 +24,67 @@
 - 他们都是引入外部资源的属性，例如图片，视频，css 文件，js 文件
 - href 超文本引用，属性通过指定 web 资源位置，来定义当前元素或者当前文档与目标资源之间的连接或关系
 - src 会将属性会将资源嵌入到当前文档中元素搜索在的位置
--
--
--
+- flex
+
+```
+.container{
+    /*or display：inline—flex(区别跟block和inline-block区别一样)，让一个元素变为flex容器*/
+    display:flex;
+
+
+    /*改变items的流向*/
+    flex-direction:row;	/*默认的从左到右依次排开*/
+    flex-direction:row-reverse; /*从右到左依次排开*/
+    flex-direction:column;	/*从上到下依次排开*/
+    flex-direction:column-reverse; /*从下到上依次排开*/
+
+
+    /*是否折行*/
+    flex-wrap:nowrap; /*默认是不折行的，弹性排版*/
+    flex-wrap: wrap; /*折行*/
+    flex-wrap: wrap; /*从下到上排版，然后折行*/
+
+
+    /*主轴的对齐方式*/
+    justify-content: flex-start; /*默认样式，从开始的地方开始排，尽量往后靠*/
+    justify-content: flex-end;  /*从最后开始排，尽量往后靠*/
+    justify-content: center;  /*尽量往中间靠*/
+    justify-content: space-around; /*把空间放到周围*/
+    justify-content: space-between; /*把空间全部放到中间*/
+    justify-content: space-evenly; /*把空间平均分*/
+
+
+    /*次轴的对齐方式*/
+    align-items:stretch; /*默认的样式，默认拉到跟最长的一样长*/
+    align-items:flex-start;/*都往上顶*/
+    align-items:flex-end;	/*都往下顶*/
+
+
+    /*多行对齐*/
+    align-content:flex-start; /*都往上顶，把多余的空间放到下面*/
+    align-content:flex-end; /*都往下顶，把多余的空间放到上面*/
+    align-content:center; /*把多余的行高放到两边*/
+    align-content: stretch; /*把多余的空间平均分配*/
+    align-content: space-between; /*把多余的空间放到两边*/
+    align-around: space-around; /*把多余的空间放到周围*/
+
+}
+.item{
+    /*用order排列*/
+    order:1; /*可以用order来从小到大排列，默认是0，*/
+
+
+    /*控制item所占的分数*/
+    flex-grow:1; /*让item的这个值都为相同的时候会平均分配空间*/
+
+    /*flex-shrink控制如何变瘦*/
+    flex-shrink:0;  /*当页面缩小到要挤压当前item时，我不缩小，我的兄弟元素先缩小*/
+
+
+    /*控制基本宽度*/
+    flex-basis:100px;
+
+    /*可以用align-self来定制align-items*/
+    align-self：flex-end;
+}
+```

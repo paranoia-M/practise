@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-11-09 10:45:20
- * @LastEditTime: 2021-12-10 12:59:57
+ * @LastEditTime: 2021-12-31 10:07:09
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \Front-end development learning\document\notes\study notes\react\react_study.md
@@ -35,7 +35,7 @@
 - state 和 props
   - state 主要用于保存，控制，修改自己可变状态
   - props 主要作用是让使用该组件的父组件可以传入参数来配置该组件
-- setState: 是异步方法，一个生命周期内所有的 setState 方法会合并操作。
+- setState: 是异步方法，一个生命周期内所有的 setState 方法会合并操作。(也可能是同步代码，当代码同步执行，this.setState 是异步更新，如果 this.setState 本身是在一部代码之中的话，那么他是同步更新)
 - 组件内部状态:局部状态，可以保存，修改，删除存储在组件内部的属性，
 - 受控组件，由 react 控制的输入表单元素而改变其值的方式，称为受控组件
 - 非受控组件:表单数据由 dom 本身处理，不受 setState()的控制，与传统的 HTML 表单输入相似，input 输入值即显示最新值，可以使用 ref 从 dom 获取表单值
@@ -79,7 +79,10 @@
   **_接收新的 props(加载时不调用)--> 接收新的 props --> 更新时(加载时不调用) --> 渲染 --> 更新完成时(加载时不调用)_**
 
 1. componentWillReceiveProps(nextProps) 组件加载时不调用，组件接受新的 props 时调用
-2. shouldComponentUpdate(nextProps,nextState) 组件接收到新的 props 时调用，return true 更新 dom return false 阻止更新
+2. shouldComponentUpdate(nextProps,nextState) 组件接收到新的 props 时调用，return true 更新 dom ,return false 阻止更新,默认情况下在 props 和 state 发生变化时 shouldComponentUpdate 会在渲染之前被调用，返回值默认为 true。首次渲染或使用 forceUpdate() 时不会调用该方法。
+   造成组件更新有三种情况
+   父组件重新 render 引起子组件重新 render。每当父组件重新 render 导致重传 props，子组件将跟着重新渲染，无论 props 是否有变化都可以用 shouldComponentUpdate 方法优化或者在 componentWillReceiveProps 方法中，将 props 转换成自己的 state。
+   组件本身调用 setState，无论 state 有没有变化，可通过 shouldComponentUpdate 优化
 3. componentWillUpdate(nextProps,nextState) 组件加载时不调用，只有在组将更新时才调用
 4. render() 创建虚拟 dom 进行 diff 算法，更新 dom 树都在此进行
 5. componentDidUpdate() 组件加载时不调用，组件更新完成后调用
