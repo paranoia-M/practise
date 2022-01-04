@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-11-09 10:45:20
- * @LastEditTime: 2021-12-31 10:07:09
+ * @LastEditTime: 2021-12-31 14:26:38
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \Front-end development learning\document\notes\study notes\react\react_study.md
@@ -460,3 +460,27 @@
 20. 使用 web workers 处理 cpu 密集型任务
 21. react 组件的服务端渲染
     服务端渲染可以减少初始页面的加载延迟。
+
+# 页面加载过程及优化
+
+- 页面加载过程，暂时不包含服务端渲染情况
+- 打开页面--页面完全空白
+  可以在 root 节点中写一点东西，就可以把首屏渲染的时间点提前，比如`<div class="root">Loading...</div` 可以使用 html-webpack-plugin 自动插入 loading。
+  除调外链 css
+- 首屏渲染--有可见的内容出现
+  这个阶段浏览器就是在做加载，运行 js 代码，所以提升 js 代码的加载，运行性能，就是优化的关键
+  几乎所有的 js 代码都可以划分成几大块
+
+1. 基础框架，如 React、Vue 等，这些基础框架的代码是不变的，除非升级框架
+2. polyfill，对于使用了 ES2015+ 语法的项目来说，为了兼容性，polyfill 是必要的存在；
+3. 业务基础库，务的一些通用的基础代码，不属于框架，但大部分业务都会使用到；
+4. 业务代码，特点是具体业务自身的逻辑代码。
+
+优化可以缓存基础架构，缓存的时间可以设置的相对长一点
+使用动态的 polyfill，只在需要时进行兼容
+使用 SplitChunksPlugin 自动拆分业务基础库
+
+- 首次内容渲染--页面主要内容出现
+- 可交互--页面可以进行交互
+- 内容加载完毕--多媒体内容加载完毕
+- 页面加载完毕--所有资源加载完毕

@@ -1,3 +1,12 @@
+<!--
+ * @Author: your name
+ * @Date: 2021-07-13 16:15:59
+ * @LastEditTime: 2022-01-04 12:52:39
+ * @LastEditors: Please set LastEditors
+ * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+ * @FilePath: \Front-end development learning\document\notes\study notes\css-study\css随笔.md
+-->
+
 ## 记录 css 知识点
 
 - **块级元素**
@@ -88,3 +97,38 @@
     align-self：flex-end;
 }
 ```
+
+- css 盒模型
+  标准盒模型: 设置:box-sizing: context-box; 包含:content+padding+border+margin width = content width; height = content height
+  ie 盒模型: 设置:box-sizing: border-box; 包含:content+padding+border+margin width = content+padding+border; height = content+padding+border
+- js 获取和模型的宽高
+  dom.style.width/height【只能取到内联元素的宽高】style 标签中和 link 外链获取不到
+  dom.currentStyle.width/height【只有 IE 支持】取到的时最终渲染后的宽高，只有 IE 兼容
+  document.getComputedStyle(dom,null).width/height，同上，IE9 以上支持。
+  dom.getBoundingClientRect().width/height 得到渲染后的宽和高，大多浏览器支持。IE9 以上支持。
+  dom.offsetWidth/offsetHeight【常用】包括高度（宽度）、内边距和边框，不包括外边距。最常用，兼容性最好。
+- 根据盒模型解释边距重叠
+  边距重叠是指垂直相邻的两个块级元素，当上下两个边距相遇时，其外边距会产生重叠现象，且重叠后的外边距等于其中较大者，水平方向不会改变
+  重叠后的 margin 都是正值时取较大的，都是赋值时取绝对值较大的，然后负向移位，有正有负，选取绝对值大的正负两值然后相加
+- 边距重叠解决方案
+
+1. 嵌套块级元素
+   为父元素添加 1px 的 padding 值
+   父元素设置 overflow:hidden;
+   子元素或父元素设置 display: inline-block;
+   父元素加前置内容（::before）生成。（推荐）
+2. 相邻块（兄弟）元素垂直外边距的合并（外边距塌陷）
+   如果上面的元素有下边距 margin-bottom 下面的元素有上边距 margin-top，则会造成塌陷，会取两个之中较大的那一个
+   在设置的时候可以设置成统一的 margin
+   或者使用 bfc
+   浮动元素和绝对定位元素，非块级盒子的块级容器（例如 inline-blocks, table-cells, 和 table-captions），以及 overflow 值不为 visible 的块级盒子，都会为他们的内容创建新的 BFC（块级格式上下文）。
+   在 BFC 中，盒子从顶端开始垂直的一个接一个排列，两个盒子之间的垂直间距由他们的 margin 值决定，在同一个 BFC 中，两个相邻块级盒子的垂直外边距会产生折叠。
+   在 BFC 中，每一个盒子的左外边缘会触碰到容器的左边缘，对于从右到左的格式来说，则触碰到右边缘。即使在浮动里也是这样的（尽管一个盒子的 line boxes 会因为浮动而收缩），除非这个盒子的内部创建了一个新的 BFC（由于浮动，在这种情况下盒子本身将会变得更窄）
+
+- 创建 BFC
+  浮动元素：float:left | float:right;【会导致父元素的宽度丢失,也会导致下边的元素上移】
+  定位元素：position:absolute | position:fixed；
+  display 的一些值：display:inline-block【转为行内块会导致宽度丢失】 | display:flex | display:table | table-cell、table-caption、inline-table、inline-flex、grid、inline-grid；
+  overflow 值不为 visible：overflow:hidden;【将会剪切掉溢出的元素】 | overflow:auto、overflow:scroll;
+  display:flow-root【新属性，BFC 创建新方式，没有任何副作用，注意浏览器兼容】
+  display:table 也可以生成 BFC 的原因在于 Table 会默认生成一个匿名的 table-cell，是这个匿名的 table-cell 生成了 BFC。
