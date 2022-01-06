@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-20 11:18:53
- * @LastEditTime: 2021-12-10 15:34:23
+ * @LastEditTime: 2022-01-04 14:18:15
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \Front-end development learning\document\notes\study notes\javascript\js高级程序设计\js基础.md
@@ -156,8 +156,13 @@ function SuperType(name) {
 - 有权访问另一个函数作用域中的变量的函数,
 - _私有变量_ 特权方法: 有权访问私有变量和私有函数的公有方法 (例如对象的 get set 方法)
 - _静态私有变量_
--
--
+- 隐式类型转换
+  加法运算符会触发三种类型转换: 转换为原始值，转换为数字，转换为字符串
+  ToPrimitive(input，PreferredType?)
+  PreferredType == number: input 为原始值则直接返回，否则为 object 调用 obj.valueOf()，否则调用 object.toString()否则抛出异常
+  PreferredType == string: 类似于上一个
+  +[] === 0
+  [] = [object,object]
 -
 -
 -

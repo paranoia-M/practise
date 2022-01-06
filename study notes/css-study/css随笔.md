@@ -132,3 +132,38 @@
   overflow 值不为 visible：overflow:hidden;【将会剪切掉溢出的元素】 | overflow:auto、overflow:scroll;
   display:flow-root【新属性，BFC 创建新方式，没有任何副作用，注意浏览器兼容】
   display:table 也可以生成 BFC 的原因在于 Table 会默认生成一个匿名的 table-cell，是这个匿名的 table-cell 生成了 BFC。
+- flex 容器属性
+  flex-direction: row | row-reverse | column | column-reverse;主轴方向
+
+  flex-wrap: nowrap | wrap | wrap-reverse;决定容器内项目是否可以换行
+  nowrap: 不换行，当主轴方向固定，空间不足时，项目尺寸会随之调整而不会挤到下一行
+  wrap:项目主轴尺寸超出容器时换行，第一行在上方
+  wrap-reverse: 换行，第一行在下方
+
+  flex-flow: <flex-direction> || <flex-wrap>; flex-direction 和 flex-wrap 的简写形式
+
+  justify-content: flex-start | flex-end | center | space-between | space-around;定义了项目在主轴的对齐方式。
+  flex-start:左对齐(元素整体以左边为起点依次排列)
+  flex-end:右对齐(元素整体以右边为起点依次排列)
+  center：居中
+  space-between: 两端对其项目之间的间隔相等，即剩余空间等分成间隙
+  space-around：每个项目两侧的间隔相等，所以项目之间的间隔比项目与边缘的间隔大一倍
+
+  align-items: flex-start | flex-end | center | baseline | stretch; 定义了项目在交叉轴上的对齐方式
+  flex-start:交叉轴的起点对齐,(垂直轴的起点为页面的顶部)
+  flex-end：交叉轴的终点对齐
+  center：交叉轴的中点对齐
+  baseline: 项目的第一行文字的基线对齐
+  stretch:默认值为 stretch 即如果项目未设置高度或者设为 auto，将占满整个容器的高度。
+
+  align-content: flex-start | flex-end | center | space-between | space-around | stretch;定义了多根轴线的对齐方式，如果项目只有一根轴线，那么该属性将不起作用
+
+- flex 项目属性
+  order 定义项目在容器中的排列顺序，数值越小越靠前，可取负值
+  flex-basis 定义了在分配多余空间之前，项目在主轴方向上的初始大小，浏览器根据这个属性，计算主轴是否有多余空间
+  flex-grow 定义项目的放大比例。默认为 0 即如果存在剩余分配空间，也不放大。如果所有 flex-grow 都为 1 则平均分配剩余空间，但是当所有项目的 flex-grow 都为 1 的同时剩余空间不够了同时 flex-wrap：nowrap 则 grow 将不起作用
+  flex-shrink 定义了项目的缩小属性，默认值为 1，如果空间不足，将该项目缩小(每个项目都会被缩小)如果有一个项目的 flex-shrink 属性为 0，其他为 1 则空间缩小时前者不缩小
+  align-self: auto | flex-start | flex-end | center | baseline | stretch; 允许单个项目有与其他项目不一样的对齐方式
+
+  flex: flex-grow, flex-shrink 和 flex-basis 的简写：
+  flex: none | [ <'flex-grow'> <'flex-shrink'>? || <'flex-basis'> ]
