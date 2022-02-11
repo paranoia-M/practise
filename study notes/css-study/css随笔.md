@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-13 16:15:59
- * @LastEditTime: 2022-01-04 12:52:39
+ * @LastEditTime: 2022-02-10 17:17:45
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \Front-end development learning\document\notes\study notes\css-study\css随笔.md
@@ -109,7 +109,7 @@
   dom.offsetWidth/offsetHeight【常用】包括高度（宽度）、内边距和边框，不包括外边距。最常用，兼容性最好。
 - 根据盒模型解释边距重叠
   边距重叠是指垂直相邻的两个块级元素，当上下两个边距相遇时，其外边距会产生重叠现象，且重叠后的外边距等于其中较大者，水平方向不会改变
-  重叠后的 margin 都是正值时取较大的，都是赋值时取绝对值较大的，然后负向移位，有正有负，选取绝对值大的正负两值然后相加
+  重叠后的 margin 都是正值时取较大的，都是负值时取绝对值较大的，然后负向移位，有正有负，选取绝对值大的正负两值然后相加
 - 边距重叠解决方案
 
 1. 嵌套块级元素
@@ -167,3 +167,54 @@
 
   flex: flex-grow, flex-shrink 和 flex-basis 的简写：
   flex: none | [ <'flex-grow'> <'flex-shrink'>? || <'flex-basis'> ]
+
+- background-image: url;
+  浏览器水平和垂直的显示背景图片，让图片水平的平铺在整个页面上(背景图象总是出现在背景颜色的上面)
+
+# 如何让 img 图片自适应容器的大小
+
+1. 设置图片宽高为 100%
+   虽然图片适应了盒子但是失真了(图片比容器小的情况下放大就会失真)处理方法是:
+   图片宽高都小于容器时将小于容器的图片水平，垂直居中
+   图片宽高大于容器时保持宽高比将 width 和 height 充满容器
+   代码如下:
+   ```
+   max-height: 100%;
+   max-weight: 100%;
+   margin: auto;
+   display: block;
+   ```
+2. 背景图的方式
+   background-size: contain;把图象扩展至最大尺寸，以使其宽度和高度完全适应内容区域
+   ```
+   height: 400px;
+   width: 500px;
+   border: 1px solid black;
+   background-repeat: no-repeat;
+   background-size: contain;
+   background-position: center;
+   ```
+
+# BFC & margin 塌陷
+
+BFC 就是块级格式化上下文 block formatting context
+
+特性:
+BFC 就是页面上一个隔离的独立容器，容器的子元素不会影响到外面的元素
+计算 BFC 高度时，浮动元素会被计算进去，可用于清除浮动
+内部的 box 会在垂直方向，从顶部开始一个接一个放置，相当于文档流
+box 垂直方向的距离由 margin 决定，会叠加而不是取 margin-bottom 和 margin-top 的最大值，可解决 margin 塌陷
+
+触发条件:
+position: fixed/absolute; // 绝对定位，固定定位
+display: inline-block;
+float: left/right;
+overflow: 不为 visible(scroll/hidden/auto)
+
+margin 塌陷:
+兄弟元素:垂直方向会出现 margin 合并(取较大的值)，水平方向不会合并，正常叠加
+父子元素:子元素设置 margin-top 会跳出父元素(同时忽略父元素的 margin-top)，
+
+# display 属性
+
+放款收款明细表 还款明细表

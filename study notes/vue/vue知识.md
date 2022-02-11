@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-10 10:28:58
- * @LastEditTime: 2021-10-07 23:24:21
+ * @LastEditTime: 2022-01-19 15:47:54
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \notes\study notes\vue\vue知识.vue
@@ -116,13 +116,12 @@
 - 加载顺序区别: link 同时加载，@import 在页面加载完毕后加载
 - 兼容性区别: link 是 html 标签，无兼容性问题，@import 得在 IE5 以上
 - dom 可控性区别: 可以通过 js 操作 dom，插入 link 标签来改变样式，无法使用@import 来插入样式
--
--
--
--
--
--
--
--
--
--
+
+19. 实例方法和全局 api
+
+- 数据相关的实例方法(stateMixin)
+  vm.$watch vm.$set vm.$del
+- 事件相关的实例方法(eventMixin)
+  vm.$on(event,callback) vm.$emit(event,[...args]) vm.$once(event,callback) vm.$off([event,callback])
+- 生命周期相关的实例方法(后两个是从 lifeCycleMixin 获取，第二个是从 renderMixin 获取，第一个是在跨平台的代码中挂载到 vue 构造函数的 prototype 属性上)
+  vm.$mount vm.$nextTick vm.$forceUpdate  vm.$destroy
