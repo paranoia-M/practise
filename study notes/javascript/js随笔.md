@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2022-02-10 10:20:57
- * @LastEditTime: 2022-02-11 17:15:05
+ * @LastEditTime: 2022-02-14 13:37:03
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \Front-end development learning\document\notes\study notes\javascript\js随笔.md
@@ -121,3 +121,86 @@ new 关键字会进行如下操作
      [undefined] toString 变为 '' = false --> 0 == 0
 
 # 埋点
+
+前端埋点主要是为了运营以及开发人员采集用户行为数据，以及页面性能等数进行后续的数据分析，举一些例子：比如，拿到页面在各种网络下的加载时间，再比如拿到用户在某个页面的停留时间！
+
+埋点的目的:
+
+1. 性能监控:
+   白屏时长(页面从请求达到渲染条件，出现 ui 骨架的时间，请求域名到 dns 解析完毕，返回页面骨架的时间)
+   重要页面的 http 请求时间
+   重要页面的渲染时间
+   首屏加载时间(页面所有动态内容加载完成时间，，其中包括 ajax 数据后渲染到页面的时间)
+2. 数据监控
+   page view 访问来量(页面预览)
+   Unique Visitor 访问数(唯一访客)
+   记录操作系统和浏览器
+   记录用户在页面的停留时间
+   进入当前页面的来源网页(也就是从哪进来的转化)
+
+如何埋点:
+
+1. 手动埋点(代码埋点，他的本质其实就是用 js 代码拿到一些基本信息，然后在一些特定的位置返回给服务端)
+   域名:document.domainURLdocument.URL
+   页面标题:document.title
+   分辨率:window.screen.height && window.screen.width
+   颜色深度:window.screen.colorDepth
+   Referrer: document.referrer
+   客户端语言:navigator.language
+2. 可视化埋点(用系统插入本来需要手动插入的埋点)
+3. 无埋点(所谓无只是不需要工程师在业务代码里面插入侵入式的代码。只需要简单的加载了一段定义好的 SDK 代码，技术门槛更低，使用与部署也简单，避免了需求变更，埋点错误导致的重新埋点。)
+
+# call & apply & bind
+
+改变函数执行时的上下文
+
+- call & apply 区别:
+
+  Function.call(obj,[param1[,param2[,…[,paramN]]]]):
+  使用场景:对象的继承；借用方法
+
+  1. 调用 call 的对象必须是一个函数 Function
+  2. call 的第一个参数是一个对象，Function 的调用者将会指向这个对象，如果不传则默认为全局对象 window，
+  3. 第二个参数开始可以接收任意个参数对象，每个参数会映射到相应位置的 Function 的参数上。但是如果将所有的参数作为数组传入，它们会作为一个整体映射到 Function 对应的第一个参数上，之后参数都为空。
+
+  Function.apply(obj[,argArray])
+  使用场景:Math.max;实现两个数组的合并
+
+  1. 他的调用者必须是函数 Function 并且只接收两个参数，第一个参数与 call 一致，
+  2. 第二个参数必须是数组或者类数组，他们会被转换成类数组，传入 function 中，并且会被映射到对应的参数上
+
+  Function.bind(thisArg[, arg1[, arg2[, ...]]])
+  解释:创建一个新的函数，在调用时设置 this 关键字为提供的值，并在调用新函数时，将给定参数列表作为原函数的参数序列的前若干项
+  bind 方法的返回值是函数，并且需要稍后调用，才会执行。而 apply 和 call 则是立即调用。
+
+  call 和 apply 的主要作用，是改变对象的执行上下文，并且是立即执行的。它们在参数上的写法略有区别。
+  bind 也能改变对象的执行上下文，它与 call 和 apply 不同的是，返回值是一个函数，并且需要稍后再调用一下，才会执行。
+
+# 首屏加载时间优化
+
+1. cdn 分发(减少传输距离)，通过在多台服务器部署相同的副本，当用户访问时，服务器根据用户和哪台服务器距离进，来决定哪台服务器去响应这个请求
+2. 后端在业务层的缓存，
+3. 静态文件缓存方案
+4. 前端的动态资源加载，
+   动态路由加载
+   组件动态加载
+   图片懒加载
+5. 合并请求
+6. 页面使用骨架屏，在首屏加载完成之前，通过渲染一些简单元素进行占位。骨架屏的好处在于可以减少用户等待时的急躁情绪
+7. 使用 ssr 渲染
+8. 引入 http2.0
+9. 利用好 http 压缩 gzip，
+10. 利用好 script 标签的 async 和 defer 这两个属性。功能独立且不要求马上执行的 js 文件，可以加入 async 属性。如果是优先级低且没有依赖的 js，可以加入 defer 属性。
+
+# proxy 和 Object.definedProxy
+
+Object.definedProxy(obj,prop,description) 会直接在一个对象上定义一个新属性，或者修改一个对象的现有属性，并返回此对象
+有三个问题:
+不能监听数组的变化，数组的方法不能触发
+必须遍历对象的每个属性
+必须深层遍历嵌套的对象，(当一个对象为深层嵌套时，必须逐层遍历，直到把每个对象都调用到 Object.defineProperty 为止)Vue 源码中这样的逻辑-walk 方法
+
+proxy
+支持数组：不需要对数组方法进行重载，省去了众多 hack
+针对对象：针对整个对象，而不是对象的某个属性 （省略了 Object.keys()的遍历。Reflect 是一个内置对象，提供拦截 js 的方法。这些方法与处理器对象方法相同。Reflect 不是函数对象，因此它是不可构造的。Reflect.get() Reflect.set() ）
+嵌套支持：get 里面递归调用 proxy 并返回

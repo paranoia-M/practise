@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-13 16:15:59
- * @LastEditTime: 2022-02-10 17:17:45
+ * @LastEditTime: 2022-02-14 10:18:03
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \Front-end development learning\document\notes\study notes\css-study\css随笔.md
@@ -133,14 +133,6 @@
   display:flow-root【新属性，BFC 创建新方式，没有任何副作用，注意浏览器兼容】
   display:table 也可以生成 BFC 的原因在于 Table 会默认生成一个匿名的 table-cell，是这个匿名的 table-cell 生成了 BFC。
 - flex 容器属性
-  flex-direction: row | row-reverse | column | column-reverse;主轴方向
-
-  flex-wrap: nowrap | wrap | wrap-reverse;决定容器内项目是否可以换行
-  nowrap: 不换行，当主轴方向固定，空间不足时，项目尺寸会随之调整而不会挤到下一行
-  wrap:项目主轴尺寸超出容器时换行，第一行在上方
-  wrap-reverse: 换行，第一行在下方
-
-  flex-flow: <flex-direction> || <flex-wrap>; flex-direction 和 flex-wrap 的简写形式
 
   justify-content: flex-start | flex-end | center | space-between | space-around;定义了项目在主轴的对齐方式。
   flex-start:左对齐(元素整体以左边为起点依次排列)
@@ -158,15 +150,48 @@
 
   align-content: flex-start | flex-end | center | space-between | space-around | stretch;定义了多根轴线的对齐方式，如果项目只有一根轴线，那么该属性将不起作用
 
-- flex 项目属性
-  order 定义项目在容器中的排列顺序，数值越小越靠前，可取负值
-  flex-basis 定义了在分配多余空间之前，项目在主轴方向上的初始大小，浏览器根据这个属性，计算主轴是否有多余空间
-  flex-grow 定义项目的放大比例。默认为 0 即如果存在剩余分配空间，也不放大。如果所有 flex-grow 都为 1 则平均分配剩余空间，但是当所有项目的 flex-grow 都为 1 的同时剩余空间不够了同时 flex-wrap：nowrap 则 grow 将不起作用
-  flex-shrink 定义了项目的缩小属性，默认值为 1，如果空间不足，将该项目缩小(每个项目都会被缩小)如果有一个项目的 flex-shrink 属性为 0，其他为 1 则空间缩小时前者不缩小
-  align-self: auto | flex-start | flex-end | center | baseline | stretch; 允许单个项目有与其他项目不一样的对齐方式
+# flex 项目属性
 
-  flex: flex-grow, flex-shrink 和 flex-basis 的简写：
-  flex: none | [ <'flex-grow'> <'flex-shrink'>? || <'flex-basis'> ]
+- flex-direction 主轴方向
+  flex-direction: row | row-reverse | column | column-reverse;
+  注意，改变主轴方向指的是改变主轴的起始位置和结束位置
+
+- flex-wrap 决定容器内项目是否可以换行,换行后,每一行将成为新的容器
+  flex-wrap: nowrap | wrap | wrap-reverse;
+  wrap:项目主轴尺寸超出容器时换行，第一行在上方
+  nowrap: 不换行，当主轴方向固定，空间不足时，项目尺寸会缩小,应该注意溢出的问题
+  wrap-reverse: 换行，第一行在下方
+
+- 上面两个属性的简写
+  flex-flow: <flex-direction> || <flex-wrap>; flex-direction 和 flex-wrap 的简写形式; flex-flow: row wrap;
+
+order 定义项目在容器中的排列顺序，数值越小越靠前，可取负值
+
+- flex 元素上的属性
+  剩余空间指的是 flex 容器减去所有 flex 项加起来的大小
+
+1. flex-grow 父元素容器宽度富裕时，分配多余的宽度比例，单位是数字
+
+2. flex-shrink 父元素容器宽度不足时，分配欠缺的宽度比例，单位时数字
+
+3. flex-basis 父元素容器分配的基准值，也就是最小的计算单位，单位是数字,他的优先级大于 width
+   首先判断盒模型是如何计算宽高:
+   默认 box-sizing: content-box; 宽 高 == width height
+   box-sizing: border-box; 宽 高 = width + padding + border
+   在 border-box 属性下,flex-basis 的宽度等于盒子整体的宽度,这时候就算设置了 padding 也是不会生效的
+
+探究 flex-basic 和 width 的关系:
+在 flex 布局下设置 width 是不生效的,生效的是 flex-basic
+自身渲染尺寸的优先级 max-width > width >content size
+重点: 如果盒子内容区域的 width 小于盒子的最小 width,那么没什么影响,如果盒子的内容区域大于盒子的最小 width,那么盒子的 flex-basic 会自适应
+在配合 word-break:break-all 会使内容换行.
+同时 flex-basic 会受限于 max-width,他设置的优先级是最高的
+
+4. flex-wrap 都为 1 的同时剩余空间不够了同时 flex-wrap：nowrap 则 grow 将不起作用
+
+align-self: auto | flex-start | flex-end | center | baseline | stretch; 允许单个项目有与其他项目不一样的对齐方式
+flex: flex-grow, flex-shrink 和 flex-basis 的简写：
+flex: none | [ <'flex-grow'> <'flex-shrink'>? || <'flex-basis'> ]
 
 - background-image: url;
   浏览器水平和垂直的显示背景图片，让图片水平的平铺在整个页面上(背景图象总是出现在背景颜色的上面)
@@ -217,4 +242,53 @@ margin 塌陷:
 
 # display 属性
 
-放款收款明细表 还款明细表
+display 属性：规定元素应该生成的框的类型（改变元素的类型，使用 display 属性）。
+
+none:此元素不会被显示，没有框的类型，没有框类型的元素，是无法在浏览器中显示的，因此达到了隐藏元素的作用。
+block:此元素将显示为块级元素，此元素前后会带有换行符
+inline:默认，内联元素，没有换行符，
+inline-block: 行内块级元素，具备行内元素前后没有换行符可以在一行内并列显示的特性，具备块状元素可以正确解释盒模型属性的特性元素特性，
+list-item: 此元素会作为列表显示
+run-in:此元素会根据上下文作为块级元素或内联元素显示。
+table:此元素会作为块级表格来显示（类似 <table>），表格前后带有换行符。
+table-caption:此元素会作为一个表格标题显示（类似 <caption>）
+table-footer-group:此元素会作为一个或多个行的分组来显示（类似 <tfoot>）。
+
+# position 属性
+
+用来指定一个元素在网页上的位置，
+
+1. static 正常的页面流,每个块级元素占据自己的区块（block），元素与元素之间不产生重叠，这个位置就是元素的默认位置。static 定位所导致的元素是浏览器自主决定的，因此，top，left 等将失去作用
+2. relative 相对于默认位置，进行偏移
+3. fixed 相对于视口（viewport，浏览器窗口）进行偏移，即定位基点是浏览器窗口。
+4. absolute 相对于上一级元素进行偏移，定位基点是父元素，它有一个重要的限制条件：定位基点（一般是父元素）不能是 static 定位，否则定位基点就会变成整个网页的根元素 html
+5. sticky 它会产生动态效果，很像 relative 和 fixed 的结合：一些时候是 relative 定位（定位基点是自身默认位置），另一些时候自动变成 fixed 定位（定位基点是视口）。
+   sticky 生效的前提是，必须搭配 top、bottom、left、right 这四个属性一起使用，不能省略，否则等同于 relative 定位，不产生"动态固定"的效果。原因是这四个属性用来定义"偏移距离"，浏览器把它当作 sticky 的生效门槛。
+   应用:图片的堆叠效果，表格的表头锁定
+
+# 1px 问题
+
+物理像素：移动设备出厂时，不同设备自带的不同像素，也称硬件像素；
+逻辑像素：css 中记录的像素。
+
+在移动端的开发中，写了 1px，实际上却比 1px 宽，这是因为两个 px 的含义是不一样的，UI 设计师要求的 1px 实际上是指设备的物理像素，而 css 里面记录的像素是逻辑像素，它们之间存在一个比例关系，通常可以用 javascript 中的 window.devicePixelRatio 来获取，也可以用媒体查询的 -webkit-min-device-pixel-ratio 来获取。当然，比例多少与设备相关。
+
+解决方案:
+
+1. 使用 0.5px 实现。IOS 及 Android 老设备不支持
+2. 使用 border-image 实现。修改颜色不方便
+3. 通过 viewport + rem 实现。和 0.5px 一样，机型不兼容
+4. 使用伪类 + transform 实现。 不支持圆角
+5. box-shadow 模拟边框实现。 box-shadow 不在盒子模型，需要注意预留位置
+
+# 清除浮动
+
+浮动用途:使元素脱离文档流，按照指定方向发生移动，遇到父组件边界或相邻的浮动元素停了下来
+
+浮动后外层的 div 元素无法自动程撑开，原因在于当一个内层元素浮动之后，如果没有关闭浮动(清除浮动)，其父元素也就不在包含这个浮动的内层元素，因为此时浮动元素已经脱离了文档流，因此外层不能被撑开。 除了高度无法撑开，还存在背景不能显示，padding 设置无效等问题
+
+解决方法:
+
+1. clear:both;
+2. 父级元素使用 overflow:auto;
+3. 伪元素: 利用伪元素在元素内部插入元素块，从而达到清除浮动的效果
