@@ -83,6 +83,13 @@
 - 计算属性: 计算一个值，并且会缓存下来
 
 16. hash 和 history
+    location.protocal 协议
+    location.hostname 主机名
+    location.host 主机
+    location.port 端口号
+    location.patchname 访问页面
+    location.search 搜索内容
+    location.hash 哈希值
 
 - hash 虽然出现在 url 中，但不会包含在 http 请求中，对后端没有影响，因此改变 hash 不会重新加载页面
 - history 利用了 h5 新增的 interface 的 pushState()和 replaceState()方法，这两个方法应用于浏览器记录栈，在当前已有的 back,forWord,go 基础之上，它们提供了对历史记录的修改功能，当他们执行时，虽然 url 发生改变，但浏览器不会立即向后端发送请求。
