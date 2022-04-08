@@ -1,13 +1,13 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-13 16:15:59
- * @LastEditTime: 2022-03-22 10:07:13
+ * @LastEditTime: 2022-04-08 13:56:01
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \Front-end development learning\document\notes\study notes\css-study\css随笔.md
 -->
 
-## 记录 css 知识点
+## css 知识点
 
 - **块级元素**
 - 当给一个块级元素固定宽度后，使用`margin: 0 auto`那么容器会自动适应页面布局并且居中显示。Q 当页面小于容器宽度时会出现一个横向的滚动条。S 使用`max-width`
@@ -334,3 +334,45 @@ width: auto;
 margin: auto;填充规则
 如果一侧定值，一侧 auto，则 auto 为剩余空间大小
 如果两侧均是 auto，则平均分配空间
+
+# 层叠上下文，z-index 解析
+
+css2.1 的层叠顺序:
+background/border
+负 z-index
+block 块状水平盒子
+float 浮动盒子
+inline/inline-block 水平盒子
+z-index:auto/z-index:0
+正 index
+
+层叠规则:
+谁大谁上:当具有明显的层叠水平标示的时候，如识别的 z-index 值，在同一层叠上下文领域，层叠水平值大的那一个，覆盖小的那一个
+后来居上:当元素的层叠水平一致，层叠顺序相同的时候，在 dom 流中处于后面的元素会覆盖前面的元素
+
+层叠上下文的特性:
+层叠上下文的层叠水平要比普通元素高
+层叠上下文可以阻断元素的混合模式
+层叠上下文可以嵌套，内部层叠上下文及其所有子元素均受制于外部的层叠上下文。
+每个层叠上下文和兄弟元素独立，也就是当进行层叠变化或渲染的时候，只需要考虑后代元素。
+每个层叠上下文是自成体系的，当元素发生层叠的时候，整个元素被认为是在父层叠上下文的层叠顺序中。
+
+层叠上下文的创建
+根层叠上下文: <html>
+定位元素与传统的层叠上下文:对于包含有 position:relative/position:absolute 的定位元素,当其 z-index 值不是 auto 的时候，会创建层叠上下文。
+css3 新增:
+z-index 不为 auto 的 flex 项，就是父元素为 display:flex|inline-flex
+元素的 opacity 值不是 1
+元素的 transform 值不是 none
+元素的 filter 值不是 none
+
+新增的层叠规则：
+background/border
+负 z-index
+block 块状水平盒子
+float 浮动盒子
+inline/inline-block 水平盒子，不依赖 z-index 的层叠上下文
+z-index:auto/z-index:0
+正 index
+
+# stylus less sass 的区别
