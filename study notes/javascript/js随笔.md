@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2022-02-10 10:20:57
- * @LastEditTime: 2022-03-30 13:57:05
+ * @LastEditTime: 2022-04-12 13:58:35
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \Front-end development learning\document\notes\study notes\javascript\js随笔.md
@@ -292,3 +292,47 @@ mvvm
 现在是拿到数据 -- 在 script 里面对数据进行一些处理 -- 通过 html 将视图渲染出来
 
 如何将数据模型与视图绑定起来是非常关键的异步，vue 是通过 object.defineProperty 实现
+
+# 执行上下文与作用域
+
+变量或函数的上下文决定了他们可以访问哪些数据，以及他们的行为，
+
+上下文中的代码在执行的时候，会创建变量对象的一个作用域链，这个作用域链决定了各级上下文中的代码在访问变量和函数时的顺序，代码正在执行的上下文的变量对象始终位于作用域链的最前端。
+如果上下文是函数，则其活动对象（activation object）用作变量对象。活动对象最初只有
+一个定义变量：arguments。（全局上下文中没有这个变量。）作用域链中的下一个变量对象来自包含上
+下文，再下一个对象来自再下一个包含上下文。以此类推直至全局上下文；全局上下文的变量对象始终
+是作用域链的最后一个变量对象。
+
+# 暂存性死区
+
+是指 let const 在声明之前不能被调用，如果在声明之前使用，就会出现暂存行死区，报 referenceError
+
+let 不允许在相同作用域内声明同一个变量，
+
+# 扩展运算符
+
+console.log(...[1,2,3,4,5,6])
+console.log([...'hello'])
+与解构赋值相结合 如果将扩展运算符用于数组赋值，只能放在参数的最后一位，否则会报错。
+
+应用:
+复制数组
+合并数组
+实现了 Iterator 接口的对象，任何定义了遍历器（Iterator）接口的对象，都可以用扩展运算符转为真正的数组。扩展运算符内部调用的是数据结构的 Iterator 接口，因此只要具有 Iterator 接口的对象，都可以使用扩展运算符，比如 Map 结构。
+替代函数的 apply 方法
+
+# 宏任务与微任务
+
+宏任务包括：script,setTimeout,setInterval,I/O,UI 交互事件,postMessage,MessageChannel,setImmediate,UI Rending
+微任务包括：Promise.then,Object.observe,MutationObserver,process.nextTick
+
+# Object && Array
+
+显示的创建 object 的实例有两种方法，第一种是使用 new 操作符和 object 构造函数
+另一种方法是使用对象字面量
+
+Array.from(arrayLike[, mapFn[, thisArg]]),对一个类数组或可迭代对象创建一个新的，浅拷贝的数组实例
+可用于: 从 string,map,set ,类数组对象生成数组
+
+Array.of()可以把一组参数变成数组，这个方法用于替代在 ES6 之前常用的 Array.prototype.slice.call(arguments)
+ECMAScript 提供了 Array.isArray()方法。这个方法的目的就是确定一个值是否为数组，而不用管它是在哪个全局执行上下文中创建的。

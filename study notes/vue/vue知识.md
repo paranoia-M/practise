@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-10 10:28:58
- * @LastEditTime: 2022-03-30 14:40:05
+ * @LastEditTime: 2022-04-18 16:11:05
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \notes\study notes\vue\vue知识.vue
@@ -71,27 +71,43 @@ DOM 事件，那么可以使用$listeners 获取父组件传递进来的所有�
 13. 路由
 
 - 动态路径参数 path: '/user/:id',
-- 响应路由参数变化
-- 捕获所有路由或 404 not found 路由。 所有的 path: '\*' 以 user 开头的 path: '/user-\*'
+  响应路由参数变化
+  捕获所有路由或 404 not found 路由。 所有的 path: '\*' 以 user 开头的 path: '/user-\*'
 - 嵌套路由: 在子组件里面设置 router-view 在到路由里面设置 children
 - 编程式导航 router.push(location,onComplete?,onAbort?) this.$router.push(),这个没有回退，
   router.push()=router-link-to 这个方法会向 history 栈添加一个新的记录，所以当用户点击浏览器的回退按钮时，则回到之前的 url
-  - router.replace()
-  - router.go()
-- 命名路由: routes 的 name 选项
-- 命名视图: 在同一个页面种有不同的组件，每个组件展示不同的 router-view，就需要设置 name 属性
-- 重定向和别名 redirect alias
-- 路由组件传参 通过 props 解耦$routes 的参数
+ router.replace()
+ router.go()
+ 命名路由: routes 的 name 选项
+ 命名视图: 在同一个页面种有不同的组件，每个组件展示不同的 router-view，就需要设置 name 属性
+ 重定向和别名 redirect alias
+ 路由组件传参 通过 props 解耦$routes 的参数
 - 导航守卫
-  - 全局前置守卫: router.beforeEach(to,from,next) => {} 当一个导航触发时，全局前置守卫按照创建顺序调用。守卫是异步解析执行，此时导航在所有守卫 resolve 完之前一直处于 等待中。
-  - 全局解析守卫: router.beforeResolve() 在导航被确认之前，同时在所有组件内守卫和异步路由组件被解析之后，解析守卫就被调用
-  - 全局后置钩子: router.afterEach((to, from) => {}这些钩子不会接受 next 函数也不会改变导航本身：
-  - 路由独享的守卫: 你可以在路由配置上直接定义 beforeEnter 守卫
-  - 组件内的守卫: beforeRouteEnter beforeRouteUpdate beforeRouteLeave
--
+  全局前置守卫: router.beforeEach(to,from,next) => {} 当一个导航触发时，全局前置守卫按照创建顺序调用。守卫是异步解析执行，此时导航在所有守卫 resolve 完之前一直处于 等待中。
+  全局解析守卫: router.beforeResolve() 在导航被确认之前，同时在所有组件内守卫和异步路由组件被解析之后，解析守卫就被调用
+  全局后置钩子: router.afterEach((to, from) => {}这些钩子不会接受 next 函数也不会改变导航本身：
+  路由独享的守卫: 你可以在路由配置上直接定义 beforeEnter 守卫
+  组件内的守卫: beforeRouteEnter beforeRouteUpdate beforeRouteLeave
+- 执行顺序
+  全局前置守卫 beforeEach:在路由跳转前触发，主要用于登陆验证，也就是路由还没有跳转提前告知，以免跳转了在通知为时已晚
 
-14. data 的 return: 因为每个.vue 文件都是组件，如果 data 是对象，那么每个复用这个实例的组件都返回同一份数据，就造成了数据污染
-15. watch 和 computed 的区别
+  路由独享守卫 beforeEnter:是指在单个路由配置的时候也可以设置钩子函数，类似于组件内的生命周期，
+
+  组件内守卫 beforeRouteEnter,此时 this 并不指向该组件实例
+  组件内守卫 beforeRouteUpdate
+  组件内守卫 beforeRouteLeave
+
+  全局解析守卫 beforeResolve:也是路由跳转前触发，和前置守卫的区别是，在导航确认之前，同时在所有组件内守卫和异步路由组件被解析之后，解析守卫就被调用
+
+  全局后置守卫 afterEach:他是在路由跳转完成后触发，
+  组件生命周期 beforeCreate
+  组件生命周期 created
+  组件生命周期 beforeMount
+  组件生命周期 mounted
+  组件内守卫 next 的回调
+
+1.  data 的 return: 因为每个.vue 文件都是组件，如果 data 是对象，那么每个复用这个实例的组件都返回同一份数据，就造成了数据污染
+2.  watch 和 computed 的区别
 
 - 侦听属性: immediate:表示是否要在第一次渲染时执行这个函数。deep: 如果我们监听一个对象，那么我们是否要看这个对象里面属性的变化，如果某个属性变化了，就去执行一个函数。
 - 计算属性: 计算一个值，并且会缓存下来
@@ -210,3 +226,5 @@ vue 中如何实现异步渲染:
 10. get 函数中，将实例 watcher 对象 push 到全局数组中，开始调用实例的 getter 方法，执行完毕后，将 watcher 对象从全局数组弹出，并且清除已经渲染过的依赖实例。
 11. 实例的 getter 方法实际是在实例化的时候传入的函数，也就是下面 vm 的真正更新函数\_update
 12. 实例的\_update 函数执行后，将会把两次的虚拟节点传入传入 vm 的 patch 方法执行渲染操作
+
+# 角色权限 菜单权限 按钮权限
