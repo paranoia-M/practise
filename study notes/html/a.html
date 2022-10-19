@@ -1,0 +1,58 @@
+<!--
+ * @Author: your name
+ * @Date: 2022-04-22 10:48:23
+ * @LastEditTime: 2022-04-22 11:09:15
+ * @LastEditors: Please set LastEditors
+ * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+ * @FilePath: \notes\study notes\html\a.html
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .box {
+      width: 200px;
+      height: 200px;
+      background-color: aquamarine;
+    }
+
+    .box>.target {
+      width: 100px;
+      height: 100px;
+      background-color: antiquewhite;
+      /* display: none;
+      position: absolute;
+      opacity: 0;
+      transition: opacity .25s; */
+      position: absolute;
+      opacity: 0;
+      transition: opacity .25s;
+      visibility: hidden;
+    }
+
+    .box:hover>.target {
+      /* display: block; */
+      visibility: visible;
+      opacity: 1;
+    }
+  </style>
+</head>
+
+<body>
+  <ul style="visibility:hidden;">
+    <li style="visibility:visible;">列表 1</li>
+    <li>列表 2</li>
+    <li>列表 3</li>
+    <li style="visibility:visible;">列表 4</li>
+  </ul>
+  <div class="box">
+    <div class="target"></div>
+  </div>
+</body>
+
+</html>

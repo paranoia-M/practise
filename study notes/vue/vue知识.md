@@ -122,6 +122,7 @@ DOM 事件，那么可以使用$listeners 获取父组件传递进来的所有�
     location.hash 哈希值
 
 - hash 虽然出现在 url 中，但不会包含在 http 请求中，对后端没有影响，因此改变 hash 不会重新加载页面
+  hash 是通过监听浏览器 onhashchange 事件变化，查找对应路由应用。通过改变 location.hash 改变页面路由。
 - history 利用了 h5 新增的 interface 的 pushState()和 replaceState()方法，这两个方法应用于浏览器记录栈，在当前已有的 back,forWord,go 基础之上，它们提供了对历史记录的修改功能，当他们执行时，虽然 url 发生改变，但浏览器不会立即向后端发送请求。
 - history 的优势
   - pushState 设置的 url 可以是同源下的任意 url，而 hash 只能修改#后面部分，因此只能设置当前 url 的同文档 url
@@ -132,7 +133,7 @@ DOM 事件，那么可以使用$listeners 获取父组件传递进来的所有�
   - history 在刷新页面时，如果服务器中没有相应的响应或资源，就会出现 404，因此如果 url 匹配不到任何静态资源，则应该返回同一个 index.html 页面这个页面就是你 app 依赖的页面
   - hash 模式下，仅#之前的内容包含在 http 请求，对后端来说即使没有对路由做到全面覆盖，也不会报 404
 
-17. src 和 href
+1.  src 和 href
 
 - href: 超文本引用，指向网络资源所在位置。用于在当前文档和引用资源之间确立联系
   - 当浏览器遇到 href 会并行下载资源并且不会停止对当前文档的处理
@@ -228,3 +229,49 @@ vue 中如何实现异步渲染:
 12. 实例的\_update 函数执行后，将会把两次的虚拟节点传入传入 vm 的 patch 方法执行渲染操作
 
 # 角色权限 菜单权限 按钮权限
+
+权限管理一般分为两种：
+一，后端返回一个路由信息数组，这个数组里面包含了整个页面的菜单信息，每条菜单信息包含了相应的路径以及其他前端需要展示的信息，前端只需要遍历数组并动态的添加路由信息，这样整个权限的展示都有后端处理并返回，前端只需要展示出来即可。
+二，后端只返回一个对应的权限字段，之后前端根据这个字段来决定要展示什么菜单。逻辑完全由前端处理。
+
+# vue2 生命周期
+
+beforeCreate 调用的时候是获取不到 props 或 data 里面的数据
+
+beforeMount 是在挂载前执行的，然后船舰虚拟 dom 并创建真实的 dom，最后执行 mounted，在这里有个逻辑判断，如果是外部 new Vue({}) 的话，不会存在 $vnode，所以直接执⾏ mounted 钩⼦了。如果有⼦组件的话，会递归挂载⼦组件，只有当所有⼦组件全部挂载完毕，才会执⾏根组件的挂载钩⼦。
+
+keep-alive 组件独有的。⽤ keep-alive 包裹的组件在切换时不会进⾏销毁，⽽是缓存到内存中并执⾏ deactivated 钩⼦函数，命中缓存渲染后会执⾏ actived 钩⼦函数。
+
+# diff 算法
+
+创建 vnode 虚拟节点(html 结构)
+创建空容器 container
+通过 patch(container，vnode)函数将虚拟节点添加到容器里面
+
+如果要添加新的节点或者更改节点，最直接的方法是重新执行 patch 函数，将 patch 函数里面的 vnode 更换成新的虚拟节点，这样就达到了整体的重渲染(如果更改时新旧虚拟节点相同，那么不会重新渲染，如果不同则会重新渲染，区分就在于重渲染时页面会不会闪动)
+
+diff 算法: 是虚拟 dom 的核心
+步骤:
+遍历 old vnode
+遍历 new vnode
+根据变化重新排序
+
+但是如果 vnode 非常深，遍历就很耗时。
+vue 和 react 对 diff 算法做出优化，他会遍历同一级的 dom 节点，同时，如果标签名不同的话直接删除不做深度比较，如果标签名相同的话回去比较 key 是否相同，key 相同就认为是相同节点不做深度比较，
+
+生成 vnode，调用函数 vnode(sel,data,children,text,undefined)
+patch()函数，他会在首次渲染的时候执行一次，在这里将 vnode 渲染到一个空的容器里面，patch(container，vnode)函数有两个使用场景，在首次渲染的时候会判断 container 是不是一个真实的 dom 元素，是的话就创建一个空的 vnode 并且关联一个 dom 元素，然后会比较在 patch()函数里面传的第一个参数和第二个参数是否是同一个 vnode 如果是同一个(key tag 相同的情况)就直接通过 patchVnode() 进行更新，如果不是就创建新的 dom 元素并且把老的 dom 元素删除掉
+
+key tag 相同的情况：
+patchVnode(oldVnode,vnode,insertedVnodequeue)
+{
+新的 vnode 没有 text 有 children
+新旧 children 都有定义，更新 children 使用 updateChildren()函数
+新 vnode 有 children，旧 vnode 无 children 有 text
+新 vnode 没有 children，旧 vnode 有 children
+}
+{
+新的 vnode 有 text 没有 children(将老的 vnode children 删掉，将 text 添加进去)
+}
+
+updateChildren(elm,oldCh,ch,insertVnodeQueue )
